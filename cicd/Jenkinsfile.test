@@ -1,0 +1,336 @@
+@Library("PipelineGlobalLibrary") _
+import com.ericsson.ci.mason.Mason2
+import java.text.SimpleDateFormat
+
+def _project = "5G_automation/integration-test"
+def _branch = "master"
+
+def _unit = "spinnint"
+def _credentials = "userpwd-adp"
+def _gerrit_user = ""
+def _gerrit_pass = ""
+def _cloud = "eccd-ibd-udm31582"
+def _kubeConf = _cloud + "_admin.conf"
+def _xray_id = ""
+def _use_legacy_nodes = "false"
+
+def _automation_testcase_docker_tag = params.AUTOMATION_TESTCASES_DOCKER_TAG?: "latest"
+def _automation_testcases_container = [name: "automation-test-cases", url:"armdocker.rnd.ericsson.se/proj-udm-5g-integration-test/udm5g-function-testcases", tag: _automation_testcase_docker_tag]
+def _suite_file = params.SUITE_FILE
+def _client_id = params.CLIENT_ID
+def _client_secret = params.CLIENT_SECRET
+def _http_server = "udm5g-function-testcases-service-" + env.BUILD_NUMBER
+def _log_dir = "JCAT_LOGS"
+def _jcat_logging_level = params.JCAT_DEBUG ? 'debug' : 'info'
+def _mibs_dir = "/root/.snmp/mibs"
+def _timestamp = new SimpleDateFormat("MMddyyyyHHmmss").format(new Date())
+def _arm_url = "https://arm.rnd.ki.sw.ericsson.se/artifactory/proj-univ-5g-pipeline-generic-local/"
+def _arm_artifact_name = _log_dir + "-" + _timestamp + "-" + env.BUILD_NUMBER + ".tgz"
+def _arm_logs_url = _arm_url + _arm_artifact_name
+def _jenkins_job_description = "Download JCAT logs: <a href=\"" + _arm_logs_url + "\" target=\"_blank\">" + _arm_logs_url + "</a>"
+String jira_pat_token = common.getUserPassFromCredential("userjirapat-adp", "password")
+
+if (System.getenv("JENKINS_HOME")) { // Jenkins execution
+    _cloud = params.CLOUD?: _cloud
+    _kubeConf = _cloud + "_admin.conf"
+    _xray_id = params.XRAY_ID
+    _use_legacy_nodes = params.USE_LEGACY_NODES
+
+    // Import Gerrit credentials
+    withCredentials([usernamePassword(credentialsId: "${_credentials}",
+                                      usernameVariable: "GERRIT_USER",
+                                      passwordVariable: "GERRIT_PASS")
+                    ]){
+        _gerrit_user = GERRIT_USER
+        _gerrit_pass = GERRIT_PASS
+    }
+} else { // Local Execution
+        _gerrit_user = ''       // Assign value to this credential locally
+        _gerrit_pass = ''       // Assign value to this credential locally
+}
+
+def result = Mason2.ciPipeline(this) {
+    additionalData("product", 'UNIV')
+    additionalData("cl_pipeline", 'CLe0')
+    additionalData("owner_name": 'UNIV')
+    additionalData("owner_email": 'PDLUDM5GIN@pdl.internal.ericsson.com')
+    additionalData("artifact_name", 'UNIV-5G-Solution')
+    k8sNodeSelector('wa-label', 'linux-with-fw-pod')
+    timeout(360)
+    cloud(_cloud)
+    parallel(false)
+    unit(_unit)
+    checkout {
+        gerrit("checkout") {
+            project(_project)
+            credentials(_credentials)
+            branch(_branch)
+            advancedsubopts {
+                recursiveupdate(true)
+                useparentcreds(true)
+                timeout(20)
+            }
+            cleanbeforecheckout()
+            advancedcheckout {
+                timeout(40)
+            }
+            wipeoutrepo()
+        }
+    }
+
+    script {
+        shell("Download mibs") {
+            dind(true)
+            privileged(true)
+            when("ALWAYS")
+            credentials('arm-sero-identity-token-adp')
+            container(_automation_testcases_container.name, _automation_testcases_container.url, _automation_testcases_container.tag, true)
+            cmd("""
+                if [ \$(kubectl get pod -n udm-5gcicd --no-headers | wc -l) -gt 1 ]; then
+                    echo \"Another execution on this cluster ongoing!\"
+                    kubectl get pod -n udm-5gcicd --no-headers
+                    exit 1
+                fi
+                curl -u "\${username}:\${passwd}" -o ./mibs.tgz https://arm.rnd.ki.sw.ericsson.se/artifactory/proj-integration-mibs-generic-local/mibs.tgz
+                mkdir -p \"/root/.snmp\"
+                tar xzf mibs.tgz -C \"/root/.snmp\"
+                echo "mibs +ERICSSON-ALARM-PC-MIB:ERICSSON-ALARM-TC-MIB:ERICSSON-ALARM-XPATH-MIB:ERICSSON-TC-MIB:ERICSSON-TOP-MIB" >>\"/root/.snmp/snmp.conf\"
+            """)
+        }
+    }
+
+    script {
+        shell("Install testcases service") {
+            dind(true)
+            privileged(true)
+            when("SUCCESS")
+            kubeConfig(_kubeConf)
+            container(_automation_testcases_container.name, _automation_testcases_container.url, _automation_testcases_container.tag, true)
+            cmd("""
+                POD_NAMESPACE=\$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace 2> /dev/null);
+
+                labels=\$(kubectl get pods \"\${HOSTNAME}\" -n \"\${POD_NAMESPACE}\" -o custom-columns=LABELS:.metadata.labels | grep -v LABELS)
+
+                #loadBalancerIP will automatically assigned by ECFE (pipeline-fw address-pool in metallb-config)
+                helm install ${_http_server} /root/udm5g-function-testcases-service \\
+                  --namespace \"\${POD_NAMESPACE}\" \\
+                  --set container.env.hostname=\"\${HOSTNAME}\" \\
+                  --set service.selector=\"\${labels}\"
+            """)
+        }
+    }
+
+    script {
+        shell("Setup HSS-FE/cnHSS") {
+            dind(true)
+            privileged(true)
+            when("SUCCESS")
+            kubeConfig(_kubeConf)
+            env("USE_LEGACY_NODES", _use_legacy_nodes)
+            env("CLIENT_ID", _client_id)
+            env("CLIENT_SECRET", _client_secret)
+            container(_automation_testcases_container.name, _automation_testcases_container.url, _automation_testcases_container.tag, true)
+            cmd("""
+                if [ \${USE_LEGACY_NODES} == "true" ]; then
+                  TYPE="vHSSFE"
+                  PORT_TO_ENABLE="9095"
+                  IMAGE="hssfe-validator-auto-build"
+                  kubectl get cm -n jenkins-tools legacy-nodes -o jsonpath="{.data.HLR}" --ignore-not-found > HLR.yaml
+                  kubectl get cm -n jenkins-tools legacy-nodes -o jsonpath="{.data.HSS}" --ignore-not-found > HSS.yaml
+                  kubectl get cm -n jenkins-tools legacy-nodes -o jsonpath="{.data.EPC}" --ignore-not-found > EPC.properties
+                  kubectl get cm -n jenkins-tools legacy-nodes -o jsonpath="{.data.IMS}" --ignore-not-found > IMS.properties
+                  LOCAL_IP=\$(ip r get \$(grep DESTINATION_ADDRESS EPC.properties | cut -d= -f2) | grep -o src.* | awk '{print \$2}')
+                  sed -i "s/\\(ORIGIN_ADDRESS\\).*/\1 = \${LOCAL_IP}/" EPC.properties
+                  sed -i "s/\\(ORIGIN_ADDRESS\\).*/\1 = \${LOCAL_IP}/" IMS.properties
+                else
+                  TYPE="vHSS"
+                  PORT_TO_ENABLE="80"
+                  IMAGE="cnhss-validator-auto-build"
+                fi
+
+                for NF in \$(kubectl get networkfunctions -n eric-ccsm --no-headers | awk '{print \$1}'); do
+                  NF_INFO=\$(kubectl get networkfunctions -n eric-ccsm -o json \${NF})
+                  NF_TYPE=\$(echo "\${NF_INFO}" | jq -r .spec.nfProfile.nfType)
+                  PORT=\$(echo "\${NF_INFO}" | jq -r .spec.nfProfile.nfServices[0].ipEndPoints[0].port)
+                  if [ \${NF_TYPE} == "HSS" ]; then
+                    if [[ \${PORT} == \${PORT_TO_ENABLE} ]]; then
+                      echo "\${NF} => REGISTERED"
+                      kubectl patch networkfunctions -n eric-ccsm \${NF} --type json -p='[{"op": "replace", "path": "/spec/nfProfile/nfStatus","value":"REGISTERED"}]'
+                    else
+                      echo "\${NF} => SUSPENDED"
+                      kubectl patch networkfunctions -n eric-ccsm \${NF} --type json -p='[{"op": "replace", "path": "/spec/nfProfile/nfStatus","value":"SUSPENDED"}]'
+                    fi
+                  fi
+                done
+
+                kubectl patch -n eric-eda2 deploy eric-act-activation-engine --patch '{"spec": {"template": {"spec": {"initContainers": [{"name": "eric-act-hss-validator", "image": "armdocker.rnd.ericsson.se/proj_ema_docker_poc_adp/'\${IMAGE}':latest"}]}}}}'
+                sleep 5
+                kubectl wait pod --for=condition=Ready -n eric-eda2 -lapp=eric-act-activation-engine --timeout=180s || echo "Entered if some of watched pods terminated"
+
+                EDA2_FQDN=\$(kubectl get httpproxies.projectcontour.io -A | grep eric-act-cna-oam-ingress | awk '{print \$3}')
+                TOKEN=\$(curl -sS -l -X POST -H "Content-Type:application/x-www-form-urlencoded" -d "client_id=\${CLIENT_ID}&client_secret=\${CLIENT_SECRET}&grant_type=password&username=cai3guser&password=Cai3guser!&scope=openid+scopes.ericsson.com/activation/network_element_management.read+scopes.ericsson.com/activation/network_element_management.write" https://\${EDA2_FQDN}/oauth/v1/token --insecure |jq .access_token -r)
+
+                for APP in EPS IMS; do
+                  curl -Ss -k "https://\${EDA2_FQDN}:443/cm-rest/v1/routings/HSS_FE_\${APP}" -H "Authorization: Bearer \${TOKEN}" -H "Content-Type: application/json" -d'{
+                    "networkElementType": "HSS_FE_'\${TYPE}'",
+                    "routingMethod": "UnconditionalRouting",
+                    "instance": "'\${TYPE}'_'\${APP}'",
+                    "instanceType": "NetworkElement"
+                  }' -X PUT -i
+                done
+            """)
+        }
+    }
+
+    script {
+        shell("Run test case suite") {
+            dind(true)
+            privileged(true)
+            when("SUCCESS")
+            kubeConfig(_kubeConf)
+            container(_automation_testcases_container.name, _automation_testcases_container.url, _automation_testcases_container.tag, true)
+            env("XRAY_ID", _xray_id)
+            env("USE_LEGACY_NODES", _use_legacy_nodes)
+            cmd("""
+                #WA for problems with hostname -f command on IPv6
+                echo 'alias hostname=\"echo \$HOSTNAME\"' >> /root/.bashrc
+                source /root/.bashrc
+
+                EDA_CLIENT_FILE=\"eda.client.yaml\"
+                echo \"clientId: \"${_client_id} > \${EDA_CLIENT_FILE}
+                echo \"clientSecret: \"${_client_secret} >> \${EDA_CLIENT_FILE}
+                cat \${EDA_CLIENT_FILE} 1>&2
+
+                CCPC_CLIENT_FILE=\"ccpc.client.yaml\"
+                echo \"clientId: ccpc-client\" > \${CCPC_CLIENT_FILE}
+                echo \"clientSecret: customsecret\" >> \${CCPC_CLIENT_FILE}
+                cat \${CCPC_CLIENT_FILE} 1>&2
+
+                cp \${KUBECONFIG} admin.conf
+                ADMIN_CONF=admin.conf
+                JAR_FILE=\$(find /root -name udm5g-function-testcases.jar)
+                echo \"Printing JAR, to see image creation date\" 1>&2
+                ls -l \${JAR_FILE} 1>&2
+
+                export PS1=\"seliius.dockerlocal\$ \"
+
+                kubectl get cm -n jenkins-tools jenkins-key -o jsonpath="{.data.clusterInfo}" > clusterInfo.yaml
+                kubectl get cm -n jenkins-tools jenkins-key -o jsonpath="{.data.privateKey}" > privateKey
+                if [ \$(cat clusterInfo.yaml | wc -w) -eq 0 ] || [ \$(cat privateKey | wc -w) -eq 0 ]; then
+                  exit 98
+                fi
+                chmod 600 privateKey
+                sed -i 's/sec.username:.*/sec.username: admin-sec-netconf/' \${WORKSPACE}/udm5g-extensions/src/main/resources/credentials/default_credentials.yaml
+                echo "CHART VERSIONS:" 1>&2
+                helm list --all-namespaces 1>&2
+
+                EXTRA_SETTINGS=
+                if [ \${USE_LEGACY_NODES} == "true" ]; then
+                  if [ \$(cat HSS.yaml | wc -w) -ne 0 ] && [ \$(cat EPC.properties | wc -w) -ne 0 ] && [ \$(cat IMS.properties | wc -w) -ne 0 ]; then
+                    EXTRA_SETTINGS=\"-Dhss.cli.file=HSS.yaml -Depc.conn.file=EPC.properties -Dims.conn.file=IMS.properties\"
+                  else
+                    echo \"Problem with HSS conf files!\" 1>&2
+                  fi
+                  if [ \$(cat HLR.yaml | wc -w) -ne 0 ]; then
+                    EXTRA_SETTINGS=\"\${EXTRA_SETTINGS} -Dhlr.conn.file=HLR.yaml\"
+                  else
+                    echo \"Problem with HLR conf file!\" 1>&2
+                  fi
+                fi
+
+                java \${EXTRA_SETTINGS} \\
+                  -Dkube.config.file=clusterInfo.yaml \\
+                  -Dbinaries.path=/usr/local/bin \\
+                  -Denable.mtls=true \\
+                  -Ddevelopment.mode=true \\
+                  -Dmibs.path=${_mibs_dir} \\
+                  -Dlogdir=\"\${WORKSPACE}/${_log_dir}\" \\
+                  -Dcerts.config.file=\"\${WORKSPACE}/udm5g-extensions/src/main/resources/certificates/jenkins/certs.yaml\" \\
+                  -Dcredentials.file=\"\${WORKSPACE}/udm5g-extensions/src/main/resources/credentials/default_credentials.yaml\" \\
+                  -Djcat.logging=${_jcat_logging_level} \\
+                  -Deda2.client.file=\"\${EDA_CLIENT_FILE}\" \\
+                  -Dccpc.client.file=\"\${CCPC_CLIENT_FILE}\" \\
+                  -jar \"\${JAR_FILE}\" \\
+                  ${_suite_file} > /dev/null || echo "[WARNING] Some TCs have failed!" 1>&2
+
+                jenkinsXml=\$(find \${WORKSPACE}/${_log_dir} -name jenkins.xml)
+                if ! [ -z \${XRAY_ID} ]; then
+                  curl -H "Authorization: Bearer ${jira_pat_token}" -k -L \\
+                    --request POST \\
+                    --url 'https://eteamproject.internal.ericsson.com/rest/raven/1.0/import/execution/junit?testExecKey='\${XRAY_ID}'' \\
+                    --header 'Content-Type: multipart/form-data' \\
+                    --form 'file=@'\${jenkinsXml}'' 1>&2;
+                fi
+
+                jcatStatistics=\$(find \${WORKSPACE}/${_log_dir} -name JcatStatistics.txt)
+                cat \${jcatStatistics} > test.properties
+                sed -i '1s/^/TEST_RESULT=/' test.properties
+                cat \${jcatStatistics} 1>&2
+                testResult=\$(cat \${jcatStatistics} | jq -r .passRate | cut -d. -f1)
+                echo -n \${testResult}
+            """)
+        }
+    }
+
+    jenkins {
+        dsl("showTestResult"){
+            when("ALWAYS")
+            cmd {
+                junit allowEmptyResults: true, testResults: _log_dir + '/**/jenkins.xml'
+            }
+        }
+    }
+
+    jenkins {
+        dsl("Archive JCAT logs"){
+            when("ALWAYS")
+            cmd {
+                archiveArtifacts allowEmptyArchive: true, artifacts: _log_dir + '/**, test.properties', onlyIfSuccessful: false
+            }
+        }
+    }
+
+    script {
+        shell("Package JCAT logs") {
+            env("_arm_artifact_name", _arm_artifact_name)
+            env("_log_dir", _log_dir)
+            dind(true)
+            privileged(true)
+            when("ALWAYS")
+            container(_automation_testcases_container.name, _automation_testcases_container.url, _automation_testcases_container.tag, true)
+            cmd("""
+                [ -d \"\${_log_dir}\" ] && tar -cvf \"\${_arm_artifact_name}\" \"\${_log_dir}\" --exclude='.helm'
+            """)
+        }
+    }
+
+    store {
+        arm("push-jcat-logs") {
+            depends("Run test case suite")
+            credentials('arm-sero-identity-token-adp')
+            artifact(_arm_artifact_name)
+            dateAttach(false)
+            compress(false)
+            onlyIfExists(true)
+            url(_arm_url)
+            when("ALWAYS")
+        }
+    }
+
+   jenkins {
+        dsl("Add link in description"){
+            when("ALWAYS")
+            cmd {
+                buildDescription _jenkins_job_description
+            }
+        }
+    }
+}
+
+if ( Integer.valueOf(result['Run test case suite']) == 100 ){
+    currentBuild.result = 'SUCCESS'
+} else if (Integer.valueOf(result['Run test case suite']) > 90){
+    currentBuild.result = 'UNSTABLE'
+} else{
+     currentBuild.result = 'FAILURE'
+}

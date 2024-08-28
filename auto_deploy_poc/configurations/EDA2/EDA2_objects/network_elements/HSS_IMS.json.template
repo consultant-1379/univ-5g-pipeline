@@ -1,0 +1,19 @@
+{
+  "name": "vHSS_IMS",
+  "protocolType": "ProvisioningNotification",
+  "version": "",
+  "active": true,
+  "protocolAttributes": {
+    "EndPointURL": "https://${IPV6_L}${ccsm_oam_VIP}${IPV6_R}:8444/HssIsmSdaUdcWS/services/NotificationService",
+    "BlockingTimeout": "10000",
+    "RetryAttempts": "3",
+    "HeartbeatEndPointURL": "https://${IPV6_L}${ccsm_oam_VIP}${IPV6_R}:8444/HssIsmSdaUdcWS/services/NotificationService?wsdl",
+    "MaxPoolSize": "10",
+    "IdleTimeout": "1",
+    "RetryInterval": "1000",
+    "Secure": "true",
+    "TlsPem": "eda2-cacert.pem",
+    "MutualAuthentication": "true",
+    "MTlsPem": "eda2-clientkey.pem"
+  }
+}

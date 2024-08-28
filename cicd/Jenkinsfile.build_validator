@@ -1,0 +1,92 @@
+@Library("PipelineGlobalLibrary") _
+import com.ericsson.ci.mason.Mason2
+
+def _project = "5gcicd/univ-5g-pipeline"
+def _unit = "adp"
+def _credentials = "userpwd-adp"
+def _branch = "master"
+def _refspec = ""
+def _gerrit_user = ""
+def _gerrit_pass = ""
+def _tg = "seliius06917"
+def _hss_fe_version = params.HSS_FE_VERSION
+def _ccsm_version = params.CCSM_VERSION
+def _tag_latest = params.TAG_LATEST
+def _sdk_link = params.SDK_LINK
+
+if ( System.getenv("JENKINS_HOME")) { // Jenkins execution
+    _branch = params.GERRIT_BRANCH?: 'master'
+    if( params.GERRIT_REFSPEC == ''){
+        _refspec = 'master'
+    }else{
+        _refspec = params.GERRIT_REFSPEC
+    }
+    _tg = params.TG?: _tg
+
+    // Import Gerrit credentials
+    withCredentials([usernamePassword(credentialsId: "${_credentials}",
+                                      usernameVariable: "GERRIT_USER",
+                                      passwordVariable: "GERRIT_PASS")
+                    ]){
+        _gerrit_user = GERRIT_USER
+        _gerrit_pass = GERRIT_PASS
+    }
+
+} else { // Local Execution
+        _gerrit_user = ''       // Assign value to this credential locally
+        _gerrit_pass = ''       // Assign value to this credential locally
+}
+
+def result = Mason2.ciPipeline(this) {
+    additionalData("product", 'UNIV')
+    additionalData("cl_pipeline", 'CLe0')
+    additionalData("owner_name": 'UNIV')
+    additionalData("owner_email": 'PDLUDM5GIN@pdl.internal.ericsson.com')
+    additionalData("artifact_name", 'UNIV-5G-Solution')
+    timeout(30)
+    executor("agent")
+    nodeSelector(_tg)
+    parallel(false)
+    unit(_unit)
+    checkout {
+        gerrit("checkout") {
+            project(_project)
+            credentials(_credentials)
+            branch(_branch)
+            refspec(_refspec)
+            advancedsubopts {
+                recursiveupdate(true)
+                useparentcreds(true)
+                timeout(20)
+            }
+            cleanbeforecheckout()
+            advancedcheckout() {
+                timeout(40)
+            }
+            strategybuild {
+                strategy("GERRIT")
+            }
+        }
+    }
+
+    script {
+        shell("Execute buildHssValidator.sh") {
+            container('adp-common-utils','armdocker.rnd.ericsson.se/proj-udm-5g-integration-test/util_images/adp-common-utils', '3.7.4', true)
+            dir("auto_deploy_poc")
+            privileged(true)
+            dind(true)
+            env("ARM_USER", _gerrit_user)
+            env("ARM_PASS", _gerrit_pass)
+            env("HSS_FE_VERSION", _hss_fe_version)
+            env("CCSM_VERSION", _ccsm_version)
+            env("SDK_LINK", _sdk_link)
+            env("TAG_LATEST", _tag_latest)
+            cmd("""
+
+                bash buildHssValidator.sh
+
+            """)
+        }
+    }
+
+}

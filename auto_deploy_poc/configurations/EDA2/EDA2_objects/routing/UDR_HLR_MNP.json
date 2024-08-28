@@ -1,0 +1,6 @@
+{
+  "networkElementType": "UDR_HLR_MNP",
+  "routingMethod": "UnconditionalRouting",
+  "instanceType": "NetworkElementGroup",
+  "instance": "UDR-GROUP"
+}

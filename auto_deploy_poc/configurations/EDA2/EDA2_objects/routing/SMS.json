@@ -1,0 +1,6 @@
+{
+  "networkElementType": "SMS",
+  "routingMethod": "UnconditionalRouting",
+  "instanceType": "NetworkElementGroup",
+  "instance": "CCDM-GROUP"
+}

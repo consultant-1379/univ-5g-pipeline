@@ -1,0 +1,767 @@
+<!-- this is added to avoid "already exists in HSM" errors -->
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-a4-key>
+          <a4-key-ind>0</a4-key-ind>
+          <a4-key-encryption-algorithm>aes-128-ecb</a4-key-encryption-algorithm>
+        </delete-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-a4-key>
+          <a4-key-ind>1</a4-key-ind>
+          <a4-key-encryption-algorithm>aes-128-ecb</a4-key-encryption-algorithm>
+        </delete-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-a4-key>
+          <a4-key-ind>2</a4-key-ind>
+          <a4-key-encryption-algorithm>aes-128-ecb</a4-key-encryption-algorithm>
+        </delete-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-a4-key>
+          <a4-key-ind>5</a4-key-ind>
+          <a4-key-encryption-algorithm>aes-128-ecb</a4-key-encryption-algorithm>
+        </delete-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-a4-key>
+          <a4-key-ind>0</a4-key-ind>
+          <a4-key-encryption-algorithm>des-ecb</a4-key-encryption-algorithm>
+        </delete-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-a4-key>
+          <a4-key-ind>1</a4-key-ind>
+          <a4-key-encryption-algorithm>des-ecb</a4-key-encryption-algorithm>
+        </delete-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-a4-key>
+          <a4-key-ind>2</a4-key-ind>
+          <a4-key-encryption-algorithm>des-ecb</a4-key-encryption-algorithm>
+        </delete-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-a4-key>
+          <a4-key-ind>1</a4-key-ind>
+          <a4-key-encryption-algorithm>aes-256-cbc</a4-key-encryption-algorithm>
+        </delete-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-f-set>
+          <id>0</id>
+        </delete-f-set>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-f-set>
+          <id>2</id>
+        </delete-f-set>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-f-set>
+          <id>3</id>
+        </delete-f-set>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <delete-f-set>
+          <id>4</id>
+        </delete-f-set>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <edit-config>
+    <target><running/></target>
+    <config xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0">
+      <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+        <arpf>
+          <usim-requesting-node-type>
+            <id>gan-aaa-server</id>
+            <initial-ind-value>10</initial-ind-value>
+            <end-ind-value>12</end-ind-value>
+          </usim-requesting-node-type>
+          <usim-requesting-node-type>
+            <id>ausf</id>
+            <initial-ind-value>25</initial-ind-value>
+            <end-ind-value>25</end-ind-value>
+          </usim-requesting-node-type>
+          <usim-requesting-node-type>
+            <id>bsf</id>
+            <initial-ind-value>13</initial-ind-value>
+            <end-ind-value>15</end-ind-value>
+          </usim-requesting-node-type>
+          <usim-requesting-node-type>
+            <id>s-cscf</id>
+            <initial-ind-value>29</initial-ind-value>
+            <end-ind-value>31</end-ind-value>
+          </usim-requesting-node-type>
+          <usim-requesting-node-type>
+            <id>mme</id>
+            <initial-ind-value>26</initial-ind-value>
+            <end-ind-value>28</end-ind-value>
+          </usim-requesting-node-type>
+          <usim-requesting-node-type>
+            <id>wlan-aaa-server</id>
+            <initial-ind-value>7</initial-ind-value>
+            <end-ind-value>9</end-ind-value>
+          </usim-requesting-node-type>
+          <usim-requesting-node-type>
+            <id>vlr</id>
+            <initial-ind-value>22</initial-ind-value>
+            <end-ind-value>22</end-ind-value>
+          </usim-requesting-node-type>
+          <usim-requesting-node-type>
+            <id>sgsn</id>
+            <initial-ind-value>23</initial-ind-value>
+            <end-ind-value>23</end-ind-value>
+          </usim-requesting-node-type>
+        </arpf>
+      </udm>
+    </config>
+  </edit-config>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <sidf>
+        <set-hn-key>
+          <hn-key-ind>2</hn-key-ind>
+          <protection-scheme-id>2</protection-scheme-id>
+          <hn-key-value>C5AD73DB8EFDEE643BF2F653837D2D0EE1E99FE2C4AD77A8C9E515624CC99012</hn-key-value>
+        </set-hn-key>
+      </sidf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <sidf>
+        <set-hn-key>
+          <hn-key-ind>2</hn-key-ind>
+          <protection-scheme-id>1</protection-scheme-id>
+          <hn-key-value>A546E36BF0527C9D3B16154B82465EDD62144C0AC1FC5A18506A2244BA449AC4</hn-key-value>
+        </set-hn-key>
+      </sidf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <sidf>
+        <set-hn-key>
+          <hn-key-ind>3</hn-key-ind>
+          <protection-scheme-id>1</protection-scheme-id>
+          <hn-key-value>C53C22208B61860B06C62E5406A7B330C2B577AA5558981510D128247D38BD1D</hn-key-value>
+        </set-hn-key>
+      </sidf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <sidf>
+        <set-hn-key>
+          <hn-key-ind>3</hn-key-ind>
+          <protection-scheme-id>2</protection-scheme-id>
+          <hn-key-value>F1AB1074477EBCC7F554EA1C5FC368B1616730155E0041AC447D6301975FECDA</hn-key-value>
+        </set-hn-key>
+      </sidf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <sidf>
+        <set-hn-key>
+          <hn-key-ind>1</hn-key-ind>
+          <protection-scheme-id>1</protection-scheme-id>
+          <hn-key-value>0900000000000000000000000000000000000000000000000000000000000000</hn-key-value>
+        </set-hn-key>
+      </sidf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-a4-key>
+          <a4-key-ind>0</a4-key-ind>
+          <a4-key>0123456789ABCDEF0123456789ABCDEF</a4-key>
+          <a4-key-encryption-algorithm>aes-128-ecb</a4-key-encryption-algorithm>
+        </set-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-a4-key>
+          <a4-key-ind>1</a4-key-ind>
+          <a4-key>0123456789ABCDEF0123456789ABCDEF</a4-key>
+          <a4-key-encryption-algorithm>aes-128-ecb</a4-key-encryption-algorithm>
+        </set-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-a4-key>
+          <a4-key-ind>2</a4-key-ind>
+          <a4-key>0123456789ABCDEF0123456789ABCDEF</a4-key>
+          <a4-key-encryption-algorithm>aes-128-ecb</a4-key-encryption-algorithm>
+        </set-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-a4-key>
+          <a4-key-ind>5</a4-key-ind>
+          <a4-key>0123456789ABCDEF0123456789ABCDEF</a4-key>
+          <a4-key-encryption-algorithm>aes-128-ecb</a4-key-encryption-algorithm>
+        </set-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-a4-key>
+          <a4-key-ind>0</a4-key-ind>
+          <a4-key>0123456789ABCDEF</a4-key>
+          <a4-key-encryption-algorithm>des-ecb</a4-key-encryption-algorithm>
+        </set-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-a4-key>
+          <a4-key-ind>1</a4-key-ind>
+          <a4-key>0123456789ABCDEF</a4-key>
+          <a4-key-encryption-algorithm>des-ecb</a4-key-encryption-algorithm>
+        </set-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-a4-key>
+          <a4-key-ind>2</a4-key-ind>
+          <a4-key>0123456789ABCDEF</a4-key>
+          <a4-key-encryption-algorithm>des-ecb</a4-key-encryption-algorithm>
+        </set-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-a4-key>
+          <a4-key-ind>0</a4-key-ind>
+          <a4-key>0123456789ABCDEF0123456789ABCDEF</a4-key>
+          <a4-key-encryption-algorithm>blowfish-128-ecb</a4-key-encryption-algorithm>
+        </set-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-a4-key>
+          <a4-key-ind>1</a4-key-ind>
+          <a4-key>0123456789ABCDEF0123456789ABCDEF</a4-key>
+          <a4-key-encryption-algorithm>blowfish-128-ecb</a4-key-encryption-algorithm>
+        </set-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-a4-key>
+          <a4-key-ind>3</a4-key-ind>
+          <a4-key>0123456789ABCDEF0123456789ABCDEF</a4-key>
+          <a4-key-encryption-algorithm>blowfish-128-ecb</a4-key-encryption-algorithm>
+        </set-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-a4-key>
+          <a4-key-ind>1</a4-key-ind>
+          <a4-key>00111222233333444444AAABBBBCCDDF00111222233333444444AAABBBBCCDDF</a4-key>
+          <a4-key-encryption-algorithm>aes-256-cbc</a4-key-encryption-algorithm>
+        </set-a4-key>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-f-set>
+          <algorithm>milenage</algorithm>
+          <id>0</id>
+          <name>fset0</name>
+          <op>CDC202D5123E20F62B6D676AC72CB318</op>
+          <r1>64</r1>
+          <r2>0</r2>
+          <r3>32</r3>
+          <r4>64</r4>
+          <r5>96</r5>
+        </set-f-set>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-f-set>
+          <algorithm>test</algorithm>
+          <id>1</id>
+          <name>fset1</name>
+        </set-f-set>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-f-set>
+          <algorithm>milenage</algorithm>
+          <id>2</id>
+          <name>fset2</name>
+          <op>00112233445566778899AABBCCDDEEFF</op>
+          <r1>64</r1>
+          <r2>0</r2>
+          <r3>32</r3>
+          <r4>64</r4>
+          <r5>96</r5>
+        </set-f-set>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-f-set>
+          <algorithm>milenage</algorithm>
+          <id>3</id>
+          <name>fset3</name>
+          <op>AE54B06C38DD2A4B9947A33FEE1008BC</op>
+          <r1>64</r1>
+          <r2>0</r2>
+          <r3>32</r3>
+          <r4>64</r4>
+          <r5>96</r5>
+        </set-f-set>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <arpf>
+        <set-f-set>
+          <algorithm>milenage</algorithm>
+          <id>4</id>
+          <name>fset4</name>
+          <op>CDC202D5123E20F62B6D676AC72CB318</op>
+          <r1>23</r1>
+          <r2>20</r2>
+          <r3>125</r3>
+          <r4>100</r4>
+          <r5>30</r5>
+        </set-f-set>
+      </arpf>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+    <capabilities>
+        <capability>
+            urn:ietf:params:netconf:base:1.0
+        </capability>
+    </capabilities>
+</hello>
+]]>]]>
+<?xml version="1.0" encoding="UTF-8"?>
+<rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="101">
+   <edit-config>
+      <target>
+         <running />
+      </target>
+      <config>
+         <diameter xmlns="urn:rdns:com:ericsson:oammodel:ericsson-diameter-adp">
+            <transport>
+               <node>
+                  <id>HostServer</id>
+                  <origin-realm>source.server.realm.com</origin-realm>
+                  <origin-host>machine.source.server.realm.com</origin-host>
+                  <product-name>CCPC</product-name>
+                  <vendor-id>193</vendor-id>
+                  <firmware-revision>1</firmware-revision>
+                  <tls-profile>
+                     <!-- Specify the key of the tls-profile instance. -->
+                     <id>ccpc-tls-diameter</id>
+                     <!-- Reference to a Diameter specific certificate and its associated private key in the keystore. -->
+                     <keystore-reference>
+                        <!-- Reference to a Diameter specific private key in the keystore. -->
+                        <asymmetric-key>ccpc-tls-diameter</asymmetric-key>
+                        <!-- Reference to a Diameter specific certificate in the keystore. -->
+                        <certificate>ccpc-tls-diameter</certificate>
+                     </keystore-reference>
+                     <!-- Reference to a set of Diameter trust anchors that exists in the truststore. -->
+                     <truststore-reference>ccpc-tls-diameter</truststore-reference>
+                  </tls-profile>
+               </node>
+               <local-endpoint>
+                  <id>TransportEndpointServer</id>
+                  <enabled>true</enabled>
+                  <dscp>0</dscp>
+                  <watchdog-timer>30000</watchdog-timer>
+                  <reconnect-timer>30000</reconnect-timer>
+                  <node>HostServer</node>
+                  <terminate-connection-from-accepted-peers>DynamicPeerAcceptor</terminate-connection-from-accepted-peers>
+                  <transport-tcp>
+                     <port>3868</port>
+                     <rank>1</rank>
+                     <address>AddressServer</address>
+                     <!-- If defined, endpoint uses TLS to secure the communication with properties of the referred tls-profile. NEEDED FOR CCES-CCPC Rx-->
+                     <!--                            <tls-profile>ccpc-tls-diameter</tls-profile> -->
+                     <!-- Used to turn off hostname validation on TLS secured static connections. -->
+                     <tls-host-name-validation>false</tls-host-name-validation>
+                  </transport-tcp>
+               </local-endpoint>
+            </transport>
+            <routing-table>
+               <id>RxRoutingTable</id>
+               <service>PcfRx</service>
+               <routing-entry>
+                  <id>10</id>
+                  <expression>msg.ingress</expression>
+                  <action>route-to-service service="PcfRx"</action>
+               </routing-entry>
+               <routing-entry>
+                  <id>2</id>
+                  <expression>msg.egress</expression>
+                  <action>route-to-peer-group peer="nef.ericsson.se"</action>
+               </routing-entry>
+            </routing-table>
+         </diameter>
+      </config>
+   </edit-config>
+</rpc>
+

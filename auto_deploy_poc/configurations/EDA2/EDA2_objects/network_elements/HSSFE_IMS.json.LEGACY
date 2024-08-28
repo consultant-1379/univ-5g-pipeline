@@ -1,0 +1,19 @@
+{
+  "name": "vHSSFE_IMS",
+  "protocolType": "ProvisioningNotification",
+  "version": "",
+  "active": true,
+  "protocolAttributes": {
+    "EndPointURL": "http://${IPV6_L}${HSS_SOAP_VIP}${IPV6_R}:8092/HssIsmSdaUdcWS/services/NotificationService",
+    "BlockingTimeout": "10000",
+    "RetryAttempts": "3",
+    "HeartbeatEndPointURL": "http://${IPV6_L}${HSS_SOAP_VIP}${IPV6_R}:8092/HssIsmSdaUdcWS/services/NotificationService?wsdl",
+    "MaxPoolSize": "10",
+    "IdleTimeout": "1",
+    "RetryInterval": "1000",
+    "Secure": "false",
+    "TlsPem": "",
+    "MutualAuthentication": "false",
+    "MTlsPem": ""
+  }
+}

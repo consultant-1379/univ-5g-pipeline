@@ -1,0 +1,113 @@
+@Library("PipelineGlobalLibrary") _
+import com.ericsson.ci.mason.Mason2
+
+def _project = "5gcicd/univ-5g-pipeline"
+def _unit = "adp"
+def _credentials = "userpwd-adp"
+def _branch = "master"
+def _refspec = ""
+def _gerrit_user = ""
+def _gerrit_pass = ""
+def _cloud = "eccd-capo-28448"
+def _kubeConf = _cloud + "_admin.conf"
+def _packages_version = ""
+def _jira_pat_token = common.getUserPassFromCredential("userjirapat-adp", "password")
+
+
+if ( System.getenv("JENKINS_HOME")) { // Jenkins execution
+    _branch = params.GERRIT_BRANCH?: 'master'
+    if( params.GERRIT_REFSPEC == ''){
+        _refspec = 'master'
+    }else{
+        _refspec = params.GERRIT_REFSPEC
+    }
+    _cloud = params.CLOUD?: _cloud
+    _kubeConf = _cloud + "_admin.conf"
+    _packages_version = params.PACKAGES_VERSION
+    
+    // Import Gerrit credentials
+    withCredentials([usernamePassword(credentialsId: "${_credentials}",
+                                      usernameVariable: "GERRIT_USER",
+                                      passwordVariable: "GERRIT_PASS")
+                    ]){
+        _gerrit_user = GERRIT_USER
+        _gerrit_pass = GERRIT_PASS
+    }
+
+} else { // Local Execution
+        _gerrit_user = ''       // Assign value to this credential locally
+        _gerrit_pass = ''       // Assign value to this credential locally
+}
+
+def result = Mason2.ciPipeline(this) {
+    additionalData("product", 'UNIV')
+    additionalData("cl_pipeline", 'CLe0')
+    additionalData("owner_name": 'UNIV')
+    additionalData("owner_email": 'PDLUDM5GIN@pdl.internal.ericsson.com')
+    additionalData("artifact_name", 'UNIV-5G-Solution')
+    cloud(_cloud)
+    parallel(false)
+    unit(_unit)
+    checkout {
+        gerrit("checkout") {
+            project(_project)
+            credentials(_credentials)
+            branch(_branch)
+            refspec(_refspec)
+            advancedsubopts {
+                recursiveupdate(true)
+                useparentcreds(true)
+                timeout(20)
+            }
+            cleanbeforecheckout()
+            advancedcheckout() {
+                timeout(40)
+            }
+            strategybuild {
+                strategy("GERRIT")
+            }
+        }
+    }
+    script {
+        shell("Create XRAY") {
+            env("JIRA_TOKEN", _jira_pat_token)
+            env("PACKAGES_VERSION", _packages_version)
+            kubeConfig(_kubeConf)
+            container('adp-common-utils','armdocker.rnd.ericsson.se/proj-udm-5g-integration-test/util_images/adp-common-utils', '3.7.2', true)
+            dir("auto_deploy_poc")
+            privileged(true)
+            cmd("""
+
+                bash create_xray.sh
+
+            """)
+        }
+    }
+
+    script {
+        shell("Copy artifacts to workspace") {
+            env("ARM_USER", _gerrit_user)
+            env("ARM_PASS", _gerrit_pass)
+            kubeConfig(_kubeConf)
+            container('adp-common-utils','armdocker.rnd.ericsson.se/proj-udm-5g-integration-test/util_images/adp-common-utils', '3.7.2', true)
+            dir("auto_deploy_poc")
+            privileged(true)
+            cmd("""
+
+                touch xray.properties
+
+                cp xray.properties \${WORKSPACE}  
+
+            """)
+        }
+    }
+
+
+    jenkins {
+        dsl("Archive artifact"){
+            cmd {
+                archiveArtifacts allowEmptyArchive: true, artifacts: '*.properties', onlyIfSuccessful: true
+            }
+        }
+    }
+}

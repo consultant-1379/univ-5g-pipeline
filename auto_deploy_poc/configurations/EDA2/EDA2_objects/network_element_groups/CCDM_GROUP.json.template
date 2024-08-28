@@ -1,0 +1,11 @@
+{
+  "name": "CCDM-GROUP",
+  "groupType": "CCDM-Failover",
+  "active":true,
+  "networkElements": [
+    {
+      "name": "CCDM",
+      "order": 1
+    }${CCDM_2_NE}
+  ]
+}

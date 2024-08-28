@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+   <capabilities>
+      <capability>urn:ietf:params:netconf:base:1.0</capability>
+   </capabilities>
+</hello>
+]]>]]>
+<?xml version="1.0" encoding="UTF-8"?>
+<rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+   <edit-config>
+      <target>
+         <running />
+      </target>
+      <config xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0">
+         <pf xmlns="urn:rdns:com:ericsson:oammodel:ericsson-pf">
+            <replay-management>
+               <replay-notification-scheme>sequential</replay-notification-scheme>
+               <replay-notification-endpoint>
+                  <name>my-eda2</name>
+                  <uri>oam.udm31582.seli.gic.ericsson.se</uri>
+                  <priority>1</priority>
+                  <oauth2-credentials>
+                     <name>my-creds</name>
+                     <client-id>OWQ4YjU2NDAtYmVhMS0xMWVkLWI2NWQtYjViMDYxMDNlYTk3Cg==</client-id>
+                     <client-secret>MzA4M2IxNTktYTVhYS00N2FhLTg2NWQtNzM2OTA5ZDMwMjM0Cg==</client-secret>
+                     <user-name>cmVwbGF5VXNlcgo=</user-name>
+                     <password>cmVwbGF5VXNlcjEhCg==</password>
+                  </oauth2-credentials>
+               </replay-notification-endpoint>
+            </replay-management>
+         </pf>
+      </config>
+   </edit-config>
+</rpc>
+<close-session/>

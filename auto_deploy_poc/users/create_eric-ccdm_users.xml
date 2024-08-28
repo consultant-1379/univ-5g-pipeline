@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <edit-config>
+    <target><running/></target>
+    <config xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0">
+      <system xmlns="urn:ietf:params:xml:ns:yang:ietf-system">
+        <authentication>
+          <user>
+           <name>admin</name>
+           <password>WeakPas-1</password>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">udr-admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">nrfagent-admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">pf-admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">system-admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">udr-security-admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">kvdb-trouble-shooter</groups>
+          </user>
+          <user>
+           <name>admin-sec-netconf</name>
+           <password>WeakPas-1</password>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">udr-security-admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">nrfagent-security-admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">system-security-admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">kvdb-trouble-shooter</groups>
+          </user>
+          <oauth2-client xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">
+            <client-id>ccdm-client</client-id>
+            <client-secret>ccdm-secret</client-secret>
+            <groups>scopes.ericsson.com/activation/mapi.read</groups>
+            <groups>scopes.ericsson.com/activation/mapi.write</groups>
+          </oauth2-client>
+          <oauth2-client xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">
+            <client-id>replay-client</client-id>
+            <client-secret>replay-secret</client-secret>
+            <groups>scopes.ericsson.com/activation/mapi.read</groups>
+            <groups>scopes.ericsson.com/activation/mapi.write</groups>
+            <groups>scopes.ericsson.com/activation/replay.callback</groups>
+          </oauth2-client>
+          <oauth2-client xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">
+            <client-id>ccdm-rapi-client</client-id>
+            <client-secret>ccdm-rapi-secret</client-secret>
+            <groups>scopes.ericsson.com/activation/raw-api.write</groups>
+            <groups>scopes.ericsson.com/activation/raw-api.read</groups>
+            <groups>scopes.ericsson.com/activation/mapi.read</groups>
+          </oauth2-client>
+       </authentication>
+      </system>
+    </config>
+  </edit-config>
+  </rpc>
+  <close-session/>

@@ -1,0 +1,6 @@
+{
+  "networkElementType": "UDR_AUC",
+  "routingMethod": "UnconditionalRouting",
+  "instance": "UDR-GROUP",
+  "instanceType": "NetworkElementGroup"
+}

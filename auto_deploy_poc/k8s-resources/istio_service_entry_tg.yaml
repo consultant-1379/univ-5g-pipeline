@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  labels:
+    applicable-for: eric-ccrc.eric-ccpc.eric-cces.eric-ccdm
+  name: eric-${TG_NAME}-framework-se
+spec:
+  hosts:
+  - ${TG_HOST}
+  - ${TG_HOST}e
+  location: MESH_EXTERNAL
+  ports:
+  - name: http-port-for-tls-origination-tg
+    number: 4443
+    protocol: HTTP2
+  - name: http-port-for-tls-origination-tg2
+    number: 8443
+    protocol: HTTP2
+  - name: http-port-for-tls-origination-tg3
+    number: 8084
+    protocol: HTTP2
+  resolution: NONE

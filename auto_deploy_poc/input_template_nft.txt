@@ -1,0 +1,966 @@
+##### GENERAL  #####
+#TODO IMS and EPC dynamic adaptation
+
+TARGET=yaml
+storageClass;          ${STORAGE_CLASS}
+storageClassName;      ${STORAGE_CLASS}
+customerId;            800141
+enableCrashDumps;      true
+IPv6;                  ${USE_IPV6}
+useIPv6;               ${USE_IPV6}
+ipv6Enabled;           ${USE_IPV6}
+ipv6Stack;             ${USE_IPV6}
+useIPv6DNSFirst;       ${USE_IPV6}
+mongodbEnableIPv6;     ${USE_IPV6}
+enableIPv6;            ${USE_IPV6}
+ipStackMode;           ${IP_STACK}
+internalIPFamily;      ${IP_STACK_CAPITAL}
+PATH=policyBinding.create;          false
+legalNotice;           -
+imagePullPolicy;       IfNotPresent
+PATH=eric-data-object-storage-mn.affinity.podAntiAffinity; hard
+PATH=licenseServer.thrift.host; ${LICENSE_SERVER}
+PATH=licenseServer.thrift.port; 9095
+PATH=global.registry.url; ""
+pullSecret;               armdocker
+pullPolicy;               IfNotPresent
+ip_priority;                 UNCOMMENT
+PATH=global.sites.hostname;  nelsaas-vnf2-thrift.sero.gic.ericsson.se
+PATH=global.sites.ip;        ${LICENSE_SERVER}
+PATH=global.sites.priority;  100
+PATH=eric-lm-combined-server.sites.hostname;  nelsaas-vnf2-thrift.sero.gic.ericsson.se
+PATH=eric-lm-combined-server.sites.ip;        ${LICENSE_SERVER}
+PATH=eric-lm-combined-server.sites.priority;  100
+PATH=eric-sec-access-mgmt.ipv6.enabled;       ${USE_IPV6}
+
+TARGET=xml
+scheme; https
+nf-peer-info-enabled;      false
+user-agent-enabled;        true
+requested-heartbeat-timer; 120
+nsi;                       12345678
+inter-plmn-fqdn;           inter-plmn-fqdn.test.com
+allowed-nf-domain;         seli.gic.ericsson.se
+serving-scope;             test-serving-scope
+
+##### NRF agent day1 - OK #####
+TARGET=
+ccsm*nrf*agent;          PATH=notification-address.fqdn; ${ausf_5g_sig_FQDN}
+ccpc*nrf*agent;          PATH=notification-address.fqdn; ${ccpc_5g_traffic_FQDN}
+ccrc*SITE2*nrf*agent;    PATH=notification-address.fqdn; ${ccrc_nrf_sig_FQDN_2}
+ccrc*nrf*agent;          PATH=notification-address.fqdn; ${ccrc_nrf_sig_FQDN}
+ccdm*SITE2_*-nrf;        PATH=notification-address.fqdn; ${ccdm_5g_traffic_FQDN_2}
+ccdm*nrf*agent;          PATH=notification-address.fqdn; ${ccdm_5g_traffic_FQDN}
+cces*nrf*agent;          PATH=notification-address.fqdn; ${cces_5g_sbi_traffic_FQDN}
+
+#GEORED configuration
+TARGET=NRF2
+PATH=profile.id;              nrf-server-1
+PATH=profile.fqdn;            ${ccrc_nrf_sig_FQDN_2}
+PATH=service.fqdn;            ${ccrc_nrf_sig_FQDN_2}
+PATH=service.fqdn;            ${ccrc_nrf_sig_FQDN_2}
+PATH=service.fqdn;            ${ccrc_nrf_sig_FQDN_2}
+PATH=profile.priority;        2
+PATH=profile.instance-id;     22a1de11-ec45-4cd6-a842-ce5bb3cba3d8
+
+TARGET=nrf*agent
+PATH=notification-address.id; 0
+nf-type;                      REMOVE_BLOCK
+ipv4-address;                 REMOVE_BLOCK
+ipv6-address;                 REMOVE_BLOCK
+port;                         443
+priority;                     1
+capacity;                     100
+nf-load-report-threshold;     10
+failover-threshold;           60
+PATH=profile.instance-id;     11a1de11-ec45-4cd6-a842-ce5bb3cba3d8
+PATH=profile.fqdn;            ${ccrc_nrf_sig_FQDN}
+PATH=service.id;              0
+PATH=service.fqdn;            ${ccrc_nrf_sig_FQDN}
+PATH=service.ip-endpoint.id;  0
+PATH=service.id;              1
+PATH=service.fqdn;            ${ccrc_nrf_sig_FQDN}
+PATH=service.ip-endpoint.id;  0
+PATH=service.id;              2
+PATH=service.fqdn;            ${ccrc_nrf_sig_FQDN}
+PATH=service.ip-endpoint.id;  0
+PATH=profile.id;              nrf-server-0
+
+####### CCDM #######
+TARGET=ccdm*yaml
+istio_resolution;                             UNCOMMENT
+https-papi-provisioning_resolution;           UNCOMMENT
+PATH=global.profiles.small-system.enabled;    false
+PATH=global.profiles.standard-system.enabled; true
+PATH=global.profiles.large-system.enabled;    false
+PATH=global.profiles.cleartext.enabled;       false
+PATH=global.profiles.mtls.enabled;            true
+PATH=eric-ccsm-sbi-traffic-mtls.enabled;      true
+PATH=eric-ccsm-sbi-traffic-mtls.host;         ${udm_5g_sig_FQDN}
+PATH=eric-ccsm-sbi-traffic-mtls.addresses.1;  ${udm_5g_sig_VIP}
+PATH=eric-ccpc-sbi-traffic-mtls.enabled;      true
+PATH=eric-ccpc-sbi-traffic-mtls.host;         ${ccpc_5g_traffic_FQDN}
+PATH=eric-ccpc-sbi-traffic-mtls.addresses.1;  ${ccpc_5g_traffic_VIP}
+PATH=eric-ccrc-sbi-traffic-mtls.enabled;      true
+PATH=eric-ccrc-sbi-traffic-mtls.host;         ${ccrc_nrf_sig_FQDN}
+PATH=eric-ccrc-sbi-traffic-mtls.addresses.1;  ${ccrc_nrf_sig_VIP}
+PATH=eric-wildcard-sbi-traffic-mtls.enabled;  false
+PATH=eric-wildcard-sbi-traffic-mtls.host;     ""
+minProtocolVersion;                           TLSV1_2
+maxProtocolVersion;                           TLSV1_3
+cipherSuites; \n%%%%%%%%%%%%%%%%%%-%ECDHE-ECDSA-AES128-GCM-SHA256\n%%%%%%%%%%%%%%%%%%-%ECDHE-RSA-AES128-GCM-SHA256\n%%%%%%%%%%%%%%%%%%-%ECDHE-ECDSA-AES256-GCM-SHA384\n%%%%%%%%%%%%%%%%%%-%ECDHE-RSA-AES256-GCM-SHA384
+maxReplica;             --
+minReplica;             --
+maxReplicas;            --
+minReplicas;            --
+replicaCount;           --
+replicas;               --
+size;                   --
+PATH=eric-udr-nudrsvc.minReplica;                   6
+PATH=eric-udr-notificationsubscription.minReplica;  3
+PATH=eric-udr-nudrsvc.minReplicas;                  6
+PATH=eric-udr-notificationsubscription.minReplicas; 3
+externalTrafficPolicy;  Cluster
+addressPoolName;        -
+sharedVIPLabel;         -
+domainName;             seli.gic.ericsson.se
+clusterName;            ${CLUSTER_ID}
+productType;            CCDM
+swltId;                 STB-CCDM-14
+nodeName;               ccdm
+nodeType;               CCDM
+PATH=eric-sec-access-mgmt.ingress.tls.existingSecret; iccr-external-tls-secret
+PATH=eric-sec-access-mgmt.ingress.hostname;           iam.ccdm.ericsson.com
+PATH=eric-cnom-server.fqdn;                           cnom.ccdm.ericsson.com
+PATH=locator.localHost;                               ${ccdm_intersite_FQDN}
+PATH=eric-data-kvdb-ag.replicaCount.server;           4
+PATH=remoteHosts.host;                                test.host.com
+PATH=remoteHosts.port;                                1234
+ingressClass;           -
+synchronizerCount;      -
+PATH=syslog.enabled;    false
+enabled;                -
+applicationId;          -
+sourceIdentifierType;   ${SNMP_TYPE}
+sourceIdentifier;       ${ccdm_oam_VIP}
+PATH=federation.jobOverride; false
+egress_exclude_ips;     -
+monitorPassword;        normal
+configPassword;         normal
+manual;                 -
+namespace;              -
+cleanupSchedule;                    -
+timeDeletedHoursBeforeEntryCleanup; -
+PATH=activation.ipv6;               ${USE_IPV6}
+-;                                  #CCRC2_GEORED_PLACEHOLDER=%%%%%%%%eric-ccrc2-sbi-traffic-mtls:\n%%%%%%%%%%enabled:%true\n%%%%%%%%%%host:%${ccrc_nrf_sig_FQDN_2}\n%%%%%%%%%%addresses:\n%%%%%%%%%%-%${ccrc_nrf_sig_VIP_2}\n%%%%%%%%%%ports:\n%%%%%%%%%%%%http2-port-for-mTLS-origination:\n%%%%%%%%%%%%%%port:%443\n%%%%%%%%%%%%%%name:%http2-port-for-mTLS-origination\n%%%%%%%%%%%%%%protocol:%HTTP2\n%%%%%%%%%%%%%%mode:%mTLS\n%%%%%%%%%%%%%%maxProtocolVersion:%TLSv1_3
+priorityClassName; ""
+proclog_stasher;  --
+port;             -
+global_dscp;              UNCOMMENT
+eric-lm-combined-server;  UNCOMMENT
+pmBulksftpPort_dscp;      UNCOMMENT
+cmNbiPorts_dscp;          UNCOMMENT
+egress_dscp;              UNCOMMENT
+snmpPort_dscp;            UNCOMMENT
+ports_dscp;               UNCOMMENT
+dscp;                     56
+timezone;                 -
+proclogStasher;           --
+
+TARGET=ccdm*SITE2*yaml
+clusterName;                ${CLUSTER_ID_2}
+PATH=locator.localHost;     ${ccdm_intersite_FQDN_2}
+
+TARGET=ericsson-udr*xml
+UNCOMMENT_TAG;         all
+ipv4-address;          REMOVE_BLOCK
+ipv6-address;          REMOVE_BLOCK
+provisioning-priority; 2
+is-local-site;         true
+root-entry-dn;         dc=o,dc=com
+ldap-root-password;    normal
+ldap-rootdn-user-password;    normal
+collocated-dn;         REMOVE_BLOCK
+index;                 REMOVE_BLOCK
+priority;              1
+locality;              Split
+mcc;                   460
+mnc;                   000
+host;                  ${ccdm_intersite_FQDN}
+PATH=nf-profile.fqdn;  ${ccdm_5g_traffic_FQDN}
+PATH=site.id;          1
+PATH=site.name;        ${CLUSTER_ID}
+PATH=nudr-dr-endpoint.port;                        443
+PATH=nudr-provisioning-endpoint.port;              443
+PATH=consistency-check-orchestrator-endpoint.port; 443
+group-id;  groupid-000001
+PATH=ldap-acl.name; acls.conf
+PATH=ldap-acl.content; access%to%dn.children="ou=admin,dc=o,dc=com"\n%by%*%auth\\n\\naccess%to%*\n%by%users%write
+maps-to-nf-type;                  REMOVE_BLOCK
+PATH=ldap-user.name; PGUser
+PATH=ldap-user.password; PGUserCUDB
+PATH=ldap-user.authentication-password; PGUserCUDB
+PATH=ldap-user.is-provisioning-user; true
+PATH=ldap-user.is-reprovisioning-user; false
+PATH=ldap-user.avoid-notify-updates; false
+PATH=ldap-user.allow-proxy-to-cudb; false
+PATH=ldap-user.for-provisioning-function; true
+INSERT_AFTER=ldap-user; <ldap-user><name>eirUser</name><authentication-password>test</authentication-password><maps-to-nf-type>5G_EIR</maps-to-nf-type></ldap-user>\n<ldap-user><name>HSSUser</name><authentication-password>HSSUserCUDB</authentication-password><maps-to-nf-type>HSS</maps-to-nf-type></ldap-user>\n<ldap-user><name>H</name><authentication-password>HLRUSERCUDB</authentication-password></ldap-user>\n<ldap-user><name>PGReplayUser</name><authentication-password>PGReplayUser</authentication-password><is-reprovisioning-user>true</is-reprovisioning-user></ldap-user>
+PATH=nf-profile.instance-id; f8b5865c-49e8-463e-8f16-4dd6a15d3f41
+PATH=snssai.id; 0
+nf-set-id; set1.udrset.5gc.mnc000.mcc460
+PATH=allowed-nssai.id; 0
+sd; abAB01
+sst; 0
+supi-pattern;       .*2408.*
+identity-pattern;   .*2408.*
+identity-start;     REMOVE_BLOCK
+identity-end;       REMOVE_BLOCK
+supi-start;         REMOVE_BLOCK
+supi-end;           REMOVE_BLOCK
+supported-data-set; policy</supported-data-set><supported-data-set>subscription
+PATH=supi-range.id;  0
+PATH=gpsi-range.id;  0
+PATH=external-group-identifiers-range.id; 0
+PATH=remote-nf-profile.instance-id; 841d1b7c-5103-11e9-8c09-174c95907e28
+PATH=remote-nf-profile.service.instance-id; UDM
+PATH=default-notification-subscription.callback-uri;        https://${udm_5g_sig_FQDN}:443/nudm-notifications/v2/sdm
+PATH=default-notification-subscription.notification-type;   data-removal-notification
+INSERT_AFTER=default-notification-subscription; <default-notification-subscription><notification-type>data-change-notification</notification-type><callback-uri>https://${udm_5g_sig_FQDN}:443/nudm-notifications/v2/sdm</callback-uri></default-notification-subscription>
+ldap-schema;             REMOVE_BLOCK
+INSERT_FILE=ldap-access; ./configurations/ldap_schemas.xml
+PATH=end-point-group.name; HLR_SERVERS
+PATH=end-point-group.end-point.name; RRB1
+PATH=end-point-group.end-point.uri; http://seliius06917.seli.gic.ericsson.se:8080/ws
+PATH=nudr-dr-notifications.end-point; 841d1b7c-5103-11e9-8c09-174c95907e28
+PATH=event-type.id;                        1
+PATH=event-type.name;                      SoapNotificationEvent
+PATH=event-type.ep-group;                  HLR_SERVERS
+PATH=target-entry.id;                      1
+PATH=target-entry.entry-dn;                AvgDynInfId=AvgDynInf
+PATH=target-attribute.id;                  1
+PATH=target-attribute.attribute-name;      AvgSeqList
+PATH=target-attribute.attribute-type;      monitor
+check-value;                               REMOVE_BLOCK
+INSERT_AFTER=soap-notifications;           <administrative-state>unlocked</administrative-state>
+maximum-subscription-duration;             5000
+allow-lock-changes;                        false
+is-value-sent;                             REMOVE_BLOCK
+PATH=soap-notifications.enabled;  true
+PATH=soap-notifications.weight;   1
+INSERT_AFTER=scheme;              <fqdn>${ccdm_5g_traffic_FQDN}</fqdn>
+tls-mode;                         REMOVE_BLOCK
+PATH=registered-key.key-id;       1
+PATH=registered-key.public-key;   -----BEGIN%PUBLIC%KEY-----\\\\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEF17mLuUy38owcpFXP6zVuJhh/GE3\\\\n1dsctDWPiDPvCzd9uw3BtYolitrnCcU9gsbBWhpea4NBdlIAnOSfKYBddg==\\\\n-----END%PUBLIC%KEY-----
+PATH=oauth2-required;             false
+PATH=ldap-endpoint.port;          636
+#WA for string in README which is causing problems
+-;                                <!.*>=%
+
+TARGET=SITE1*udr*xml
+INSERT_INTO=geo-redundancy;       <site><id>2</id><name>${CLUSTER_ID_2}</name><is-local-site>false</is-local-site><provisioning-priority>1</provisioning-priority><ldap-endpoint><host>${ccdm_intersite_FQDN_2}</host><port>636</port></ldap-endpoint><nudr-dr-endpoint><host>${ccdm_intersite_FQDN_2}</host><port>443</port></nudr-dr-endpoint><nudr-provisioning-endpoint><host>${ccdm_intersite_FQDN_2}</host><port>443</port></nudr-provisioning-endpoint><db-locator-endpoint><host>${ccdm_intersite_FQDN_2}</host><port>10334</port></db-locator-endpoint><db-receiver-endpoint><host>${ccdm_intersite_FQDN_2}</host><port>31000</port></db-receiver-endpoint><db-coordinator-endpoint><host>${ccdm_intersite_FQDN_2}</host><port>2181</port></db-coordinator-endpoint><consistency-check-orchestrator-endpoint><host>${ccdm_intersite_FQDN_2}</host><port>443</port></consistency-check-orchestrator-endpoint></site>
+
+TARGET=SITE2*udr*xml
+-;                           _DUMMY>=>
+priority;                    2
+provisioning-priority;       1
+host;                        ${ccdm_intersite_FQDN_2}
+PATH=nf-profile.fqdn;        ${ccdm_5g_traffic_FQDN_2}
+PATH=site.id;                2
+PATH=site.name;              ${CLUSTER_ID_2}
+PATH=nf-profile.instance-id; f9b5865c-49e8-463e-8f16-4dd6a1519493
+PATH=service.fqdn;           ${ccdm_5g_traffic_FQDN_2}
+INSERT_INTO=geo-redundancy;  <site><id>1</id><name>${CLUSTER_ID}</name><is-local-site>false</is-local-site><provisioning-priority>2</provisioning-priority><ldap-endpoint><host>${ccdm_intersite_FQDN}</host><port>636</port></ldap-endpoint><nudr-dr-endpoint><host>${ccdm_intersite_FQDN}</host><port>443</port></nudr-dr-endpoint><nudr-provisioning-endpoint><host>${ccdm_intersite_FQDN}</host><port>443</port></nudr-provisioning-endpoint><db-locator-endpoint><host>${ccdm_intersite_FQDN}</host><port>10334</port></db-locator-endpoint><db-receiver-endpoint><host>${ccdm_intersite_FQDN}</host><port>31000</port></db-receiver-endpoint><db-coordinator-endpoint><host>${ccdm_intersite_FQDN}</host><port>2181</port></db-coordinator-endpoint><consistency-check-orchestrator-endpoint><host>${ccdm_intersite_FQDN}</host><port>443</port></consistency-check-orchestrator-endpoint></site>
+
+
+####### CCSM #######
+TARGET=ccsm*yaml
+PATH=global.profiles.small-system.enabled;  false
+PATH=global.profiles.std-system.enabled;    true
+PATH=global.profiles.cleartext.enabled;     false
+PATH=global.profiles.mtls.enabled;          true
+PATH=global.profiles.ipv4.enabled;          ${USE_IPV4}
+PATH=global.profiles.ipv6.enabled;          ${USE_IPV6}
+nrfsupport;                                 true
+PATH=global.nrfagent.enabled;               true
+PATH=eric-ccsm-ausf.enabled;                true
+enabled;                                    -
+networkType;                                eMBB
+PATH=internalMtls.enabled;                  "off"
+PATH=eric-ccsm-mapproxy-1.enabled;          false
+PATH=eric-ccsm-mapproxy-2.enabled;          false
+PATH=eric-ccsm-mapproxy-3.enabled;          false
+PATH=eric-ccsm-mapproxy-4.enabled;          false
+PATH=coredumps.enabled;                     true
+PATH=eric-ccsm-sbi-traffic-mtls.host;       "*.seli.gic.ericsson.se"
+PATH=eric-ccsm-sbi-traffic-mtls.ports.port; 443
+swltId;          STB-CCSM-7
+productType;     CCSM
+nodeName;        ccsm
+nodeType;        CCSM
+applicationId;   ccsm
+PATH=fsGroup.manual;                         10000
+PATH=fsGroup.namespace;                      false
+hsminstall;                                  ${USE_HSM}
+hagroup;                                     HA_PWD_UNIV1
+PATH=hsmconfig.server.1.endpoint;            10.198.28.31
+PATH=hsmconfig.server.1.serialnum;           "1444180690980"
+PATH=hsmconfig.server.2.endpoint;            10.198.28.32
+PATH=hsmconfig.server.2.serialnum;           "1444185347598"
+PATH=uoi.hostname;                           nelsaas-vnf2-thrift.sero.gic.ericsson.se
+PATH=uoi.ip;                                 ${LICENSE_SERVER}
+PATH=uoi.port;                               8060
+mapStacksNumber;                             1
+eric-stm-diameter;                           \n%%nodeSelector:\n%%%%wa-label:%linux-without-fw-pod
+PATH=eric-ccsm-mapproxy-1.Deployment;        \n%%%%%%%%wa-label:%linux-without-fw-pod
+egress_exclude_ips;                          -
+#lot of stuff related to CCSM secondary network feature
+eric-ccsm-mapproxy-1-vip-a;                  -
+eric-ccsm-mapproxy-1-vip-b;                  -
+eric-ccsm-mapproxy-2-vip-a;                  -
+eric-ccsm-mapproxy-2-vip-b;                  -
+eric-ccsm-mapproxy-3-vip-a;                  -
+eric-ccsm-mapproxy-3-vip-b;                  -
+eric-ccsm-mapproxy-4-vip-a;                  -
+eric-ccsm-mapproxy-4-vip-b;                  -
+eric-ccsm-dia-vip-a;                         -
+eric-ccsm-dia-vip-b;                         -
+address;                                     -
+localAsn;                                    -
+remoteAsn;                                   -
+holdTime;                                    -
+ipv4Prefix;                                  -
+ipv6Prefix;                                  -
+nsmVlanBaseInterface;                        -
+vlanId;                                      -
+attach_name;                                 -
+attach-name;                                 -
+namespace;                                   -
+ip_family;                                   ${IP_STACK}
+PATH=eric-ccsm-senpco.type;                  nvfi
+PATH=secondaryNetwork.enabled;               false
+PATH=eric-ccsm-senpco.mapproxy.enabled;      false
+PATH=eric-ccsm-senpco.diameter.enabled;      false
+PATH=eric-stm-diameter.secondaryNetwork.enabled;  false
+PATH=eric-ccsm-mapproxy.secondaryNetwork.enabled; false
+dscp;         56
+nsmNamespace; -
+dscpDualStack; false
+egressDscpSBI; -
+ingressDscpRepliesSBI; -
+ingressDscpRepliesSoapIMSEPC; -
+egressDscpOAM;                -
+preferredNFType;              UDM
+egressDscpNoSBI;              -
+errorHttpServiceUnavailableAsFailNudrDr;      --
+errorHttpServiceUnavailableAsFailNcudrGudDr;  --
+errorHttpServiceUnavailableAsFailNhssUecm;    --
+errorHttpServiceUnavailableAsFailNamfLcs;     --
+errorHttpServiceUnavailableAsFailNudmUecm;    --
+errorHttpServiceUnavailableAsFailNudmSdm;     --
+errorHttpServiceUnavailableAsFailNamfMtLoc;   --
+errorHttpServiceUnavailableAsFailNamfEvts;    --
+errorHttpServiceUnavailableAsFailNudmMt;      --
+errorHttpServiceUnavailableAsFailNudmUeau;    --
+errorHttpServiceUnavailableAsFailNhssepcMt;   --
+errorHttpServiceUnavailableAsFailNhssepcUecm; --
+errorHttpServiceUnavailableAsFailNudmEe;      --
+errorHttpServiceUnavailableAsFailNudmEe;      --
+PATH=eric-ausf-capacity.minReplicas;            3
+PATH=eric-ausf-engine.minReplicas;              5
+PATH=eric-eir-eireic.minReplicas;               5
+PATH=eric-udm-cancelepclocation.minReplicas;    6
+PATH=eric-udm-capacity.minReplicas;             3
+PATH=eric-udm-iratamflocation.minReplicas;      6
+PATH=eric-udm-mtsmswaitingdata.minReplicas;     3
+PATH=eric-udm-sdmamdata.minReplicas;            7
+PATH=eric-udm-sdmimplicitunsub.minReplicas;     7
+PATH=eric-udm-sdmsmdata.minReplicas;            5
+PATH=eric-udm-sdmsmfselect.minReplicas;         10
+PATH=eric-udm-sdmsmsdata.minReplicas;           7
+PATH=eric-udm-sdmsmsmngdata.minReplicas;        6
+PATH=eric-udm-sdmsubscriptions.minReplicas;     17
+PATH=eric-udm-sdmuectxtsmsf.minReplicas;        6
+PATH=eric-udm-ueauth.minReplicas;               8
+PATH=eric-udm-uecmreg.minReplicas;              12
+PATH=eric-udm-uecmsmfregistration.minReplicas;  9
+PATH=eric-udm-uecmsmsfdereg.minReplicas;        7
+PATH=eric-udm-uecmsmsfregistration.minReplicas; 7
+PATH=eric-hssims-cxlir.minReplicas;             3
+#TODO: find better way to handle paths
+PATH=global.externalIPv4.enabled;                          ${USE_IPV4}
+PATH=global.externalIPv6.enabled;                          ${USE_IPV6}
+PATH=eric-ingressgw-ausf-traffic.externalIPv4.enabled;     ${USE_IPV4}
+PATH=eric-ingressgw-ausf-traffic.externalIPv6.enabled;     ${USE_IPV6}
+PATH=eric-ingressgw-udm-traffic.externalIPv4.enabled;      ${USE_IPV4}
+PATH=eric-ingressgw-udm-traffic.externalIPv6.enabled;      ${USE_IPV6}
+PATH=eric-ingressgw-eir-traffic.externalIPv4.enabled;      ${USE_IPV4}
+PATH=eric-ingressgw-eir-traffic.externalIPv6.enabled;      ${USE_IPV6}
+PATH=eric-ingressgw-epc-soap-traffic.externalIPv4.enabled; ${USE_IPV4}
+PATH=eric-ingressgw-epc-soap-traffic.externalIPv6.enabled; ${USE_IPV6}
+PATH=eric-ingressgw-hss-epc-traffic.externalIPv4.enabled;  ${USE_IPV4}
+PATH=eric-ingressgw-hss-epc-traffic.externalIPv6.enabled;  ${USE_IPV6}
+PATH=eric-ingressgw-ims-soap-traffic.externalIPv4.enabled; ${USE_IPV4}
+PATH=eric-ingressgw-ims-soap-traffic.externalIPv6.enabled; ${USE_IPV6}
+PATH=eric-stm-diameter.externalIPv4.enabled;               ${USE_IPV4}
+PATH=eric-stm-diameter.externalIPv6.enabled;               ${USE_IPV6}
+PATH=eric-ccsm-mapproxy-1.externalIPv4.enabled;            ${USE_IPV4}
+PATH=eric-ccsm-mapproxy-1.externalIPv6.enabled;            ${USE_IPV6}
+PATH=eric-ccsm-mapproxy-2.externalIPv4.enabled;            ${USE_IPV4}
+PATH=eric-ccsm-mapproxy-2.externalIPv6.enabled;            ${USE_IPV6}
+PATH=eric-ccsm-mapproxy-3.externalIPv4.enabled;            ${USE_IPV4}
+PATH=eric-ccsm-mapproxy-3.externalIPv6.enabled;            ${USE_IPV6}
+PATH=eric-ccsm-mapproxy-4.externalIPv4.enabled;            ${USE_IPV4}
+PATH=eric-ccsm-mapproxy-4.externalIPv6.enabled;            ${USE_IPV6}
+PATH=eric-cm-yang-provider.externalIPv4.enabled;           ${USE_IPV4}
+PATH=eric-cm-yang-provider.externalIPv6.enabled;           ${USE_IPV6}
+PATH=eric-fh-snmp-alarm-provider.externalIPv4.enabled;     ${USE_IPV4}
+PATH=eric-fh-snmp-alarm-provider.externalIPv6.enabled;     ${USE_IPV6}
+PATH=eric-pm-bulk-reporter.externalIPv4.enabled;           ${USE_IPV4}
+PATH=eric-pm-bulk-reporter.externalIPv6.enabled;           ${USE_IPV6}
+PATH=eric-tm-ingress-controller-cr.externalIPv4.enabled;   ${USE_IPV4}
+PATH=eric-tm-ingress-controller-cr.externalIPv6.enabled;   ${USE_IPV6}
+PATH=eric-ccsm-adp.eric-si-application-sys-info-handler.applicationInfoService.port; 9099
+
+TARGET=udm*common
+udm-uri;                            https://${udm_5g_sig_FQDN}:443
+fqdn;                               ${udm_5g_sig_FQDN}
+requested-status;                   REMOVE_BLOCK
+PATH=remote-hss-service-imsi.imsi-prefix;                    24081
+PATH=remote-hss-service-imsi.remote-hss-service-profile-id;  0
+remote-hss-service;                 REMOVE_BLOCK
+remote-hss-service-profile;         MARK_BLOCK
+remote-hss-service-profile;         REMOVE_BLOCK
+ipv4-address;                       REMOVE_BLOCK
+port;                               443
+supi-start;                         240810000000001
+supi-end;                           240819999999999
+identity-start;                     240810000000001
+identity-end;                       240819999999999
+INSERT_AFTER=home-plmn;             <home-plmn><mcc>240</mcc><mnc>81</mnc></home-plmn>\n<home-plmn><mcc>460</mcc><mnc>000</mnc></home-plmn>
+PATH=visited-plmn.mcc;              240
+PATH=visited-plmn.mnc;              81
+PATH=visited-plmn.mcc;              460
+PATH=visited-plmn.mnc;              000
+-;                                  <name>nudm-uecm</name>=<name>nudm-uecm</name>\n<default-notification-subscription>\n<notification-type>data-removal-notification</notification-type>\n<callback-uri>https://${udm_5g_sig_FQDN}:443/nudm-notifications/v2/sdm</callback-uri>\n</default-notification-subscription>\n<default-notification-subscription>\n<notification-type>data-change-notification</notification-type>\n<callback-uri>https://${udm_5g_sig_FQDN}:443/nudm-notifications/v2/sdm</callback-uri>\n</default-notification-subscription>
+PATH=nf-profile.instance-id;        841d1b7c-5103-11e9-8c09-174c95907e28
+INSERT_INTO=udm-info;               <group-id>groupid-000001</group-id>
+INSERT_INTO=nf-profile;             <snssai>\n<id>0</id>\n<sst>0</sst>\n<sd>abAB01</sd>\n</snssai>\n<priority>0</priority>\n<capacity>1000</capacity>\n<locality>SH</locality>\n<plmn-id><mcc>460</mcc><mnc>000</mnc></plmn-id>
+INSERT_AFTER=gpsi-range;            <gpsi-range><id>3</id><identity-pattern>990</identity-pattern></gpsi-range>
+INSERT_AFTER=allowed-nf-type;       <allowed-nf-type>hss</allowed-nf-type>
+
+TARGET=ausf*xml
+ipv4-address;                 REMOVE_BLOCK
+ipv6-address;                 REMOVE_BLOCK
+ausf-info;                    REMOVE_BLOCK
+snssai;                       REMOVE_BLOCK
+session-timer;                5
+retry-number;                 2
+requested-status;             registered
+udm-url;                      https://${udm_5g_sig_FQDN}:443/nudm-ueau/v1
+fqdn;                         ${ausf_5g_sig_FQDN}
+port;                         443
+PATH=nf-profile.instance-id;  0c765084-9cc5-49c6-9876-ae2f5fa2a63f
+PATH=ip-endpoint.id;          0
+PATH=plmn-id.mcc;             240
+PATH=plmn-id.mnc;             81
+INSERT_AFTER=ip-endpoint;     <allowed-plmn>\n<mcc>460</mcc>\n<mnc>000</mnc>\n</allowed-plmn>
+INSERT_AFTER=plmn-id;         <plmn-id><mcc>111</mcc>\n<mnc>222</mnc>\n</plmn-id>\n<plmn-id>\n<mcc>460</mcc>\n<mnc>000</mnc>\n</plmn-id>
+INSERT_AFTER=requested-status; <ausf-info><routing-indicator>0000</routing-indicator><group-id>groupid-000001</group-id><supi-range><id>1</id><supi-start>240810000000000</supi-start><supi-end>240819999999999</supi-end></supi-range></ausf-info>
+
+####### CCRC #######
+TARGET=ccrc*yaml
+PATH=global.profiles.small-system.enabled;        false
+PATH=global.profiles.std-system.enabled;          true
+PATH=global.profiles.cleartext.enabled;           false
+PATH=global.profiles.mtls.enabled;                true
+PATH=global.profiles.mtls-and-cleartext.enabled;  false
+swltId;                                           STB-CCRC-6
+productType;                                      CCRC
+nodeName;                                         ccrc
+PATH=eric_nrf_sbi_traffic.host;                   "*.seli.gic.ericsson.se"
+PATH=eric_nrf_kvdb_sbi_traffic.host;              "*.seli.gic.ericsson.se"
+PATH=eric_nrf_nbi_traffic.host;                   "*.seli.gic.ericsson.se"
+PATH=eric_nssf_sbi_traffic.host;                  "*.seli.gic.ericsson.se"
+PATH=eric_nssf_kvdb_sbi_traffic.host;             "*.seli.gic.ericsson.se"
+legalNotice;                                      |-
+PATH=eric-nssf-provisioning.fqdn;                 ${ccrc_prov_FQDN}
+#this must be set to false for IPv6, see GSSUPP-17212
+PILOT_ENABLE_INBOUND_PASSTHROUGH;                 ${USE_IPV4}
+kubernetes_service_ipaddress; 10.96.0.1\n%%%%nrfagent_nf_ingressgws:\n%%%%-%eric-nssf-traffic-gateway
+
+#GEORED configuration
+TARGET=ccrc*SITE*yaml
+PATH=eric-nssf.multiSite.enabled;          true
+PATH=eric-nssf.runtimeConfigMode.enabled;  true
+PATH=eric-nssf.servicePorts.kvdbAgLocator; 8091
+PATH=eric-nssf.ingress-gateway.enabled;    true
+PATH=eric-nrf.multiSite.enabled;           true
+PATH=eric-nrf.runtimeConfigMode.enabled;   true
+PATH=eric-nrf.servicePorts.kvdbAgLocator;  8091
+PATH=eric-nrf.ingress-gateway.enabled;     true
+TARGET=ccrc*SITE1*yaml
+PATH=eric-nssf.distributedSystemID;        1
+PATH=eric-nssf.localHost;                  ${ccrc_nssf_sig_FQDN}
+PATH=eric-nrf.distributedSystemID;         1
+PATH=eric-nrf.localHost;                   ${ccrc_nrf_sig_FQDN}
+PATH=eric_nrf_kvdb_sbi_traffic.host; ${ccrc_nrf_sig_FQDN_2}
+PATH=eric_nssf_kvdb_sbi_traffic.host; ${ccrc_nssf_sig_FQDN_2}
+TARGET=ccrc*SITE2*yaml
+PATH=eric-nssf.distributedSystemID;        2
+PATH=eric-nssf.localHost;                  ${ccrc_nssf_sig_FQDN_2}
+PATH=eric-nrf.distributedSystemID;         2
+PATH=eric-nrf.localHost;                   ${ccrc_nrf_sig_FQDN_2}
+PATH=eric_nrf_kvdb_sbi_traffic.host; ${ccrc_nrf_sig_FQDN}
+PATH=eric_nssf_kvdb_sbi_traffic.host; ${ccrc_nssf_sig_FQDN}
+
+TARGET=ccrc*xml
+http-header;                        REMOVE_BLOCK
+
+TARGET=nssf*xml
+PATH=nf-profile.instance-id;        13a1de33-ec45-4cd6-a842-ce5bb3cba3d8
+requested-status;                   registered
+mcc;                                460
+mnc;                                000
+fqdn;                               ${ccrc_nssf_sig_FQDN}
+port;                               443
+PATH=service.instance-id;           nnssf-nsselection-0001
+PATH=service.name;                  nnssf-nsselection
+#PATH=service.instance-id;          nnssf-nssaiavailability-0001
+#PATH=service.name;                 nnssf-nssaiavailability
+default-notification-subscription;  REMOVE_BLOCK
+common;                             REMOVE_BLOCK
+optional-feature;                   REMOVE_BLOCK
+allowed-nf-type;                    amf
+ipv4-address;                       REMOVE_BLOCK
+ipv6-address;                       REMOVE_BLOCK
+recovery-time;                      REMOVE_BLOCK
+locality;                           Split
+capacity;                           100
+priority;                           1
+PATH=ip-endpoint.id;                0
+PATH=snssai.id;                     0
+PATH=allowed-nssai.id;              0
+PATH=allowed-nssai.id;              1
+sd;                                 abAB01
+sst;                                0
+dscp;                               REMOVE_BLOCK
+INSERT_INTO=service;                <instance-id>nnssf-nssaiavailability-0001</instance-id><name>nnssf-nssaiavailability</name><scheme>https</scheme><requested-status>registered</requested-status><fqdn>${ccrc_nssf_sig_FQDN}</fqdn><ip-endpoint><id>1</id><port>443</port></ip-endpoint><allowed-plmn><mcc>460</mcc><mnc>000</mnc></allowed-plmn><allowed-nf-type>amf</allowed-nf-type><capacity>100</capacity></service>\n<service>
+
+TARGET=nrf_conf*xml
+optional-feature;             REMOVE_BLOCK
+common;                       REMOVE_BLOCK
+dns-service;                  REMOVE_BLOCK
+accesstoken-service;          REMOVE_BLOCK
+PATH=nf-profile.instance-id;  11a1de11-ec45-4cd6-a842-ce5bb3cba3d8
+mcc;                          460
+mnc;                          000
+INSERT_AFTER=plmn-id;         \n<plmn-id><mcc>111</mcc><mnc>222</mnc></plmn-id>
+priority;                     1
+ipv4-address;                 REMOVE_BLOCK
+ipv6-address;                 REMOVE_BLOCK
+snssai;                       REMOVE_BLOCK
+fqdn;                         ${ccrc_nrf_sig_FQDN}
+PATH=service.instance-id;     nnrf-nfm-01
+PATH=service.instance-id;     nnrf-disc-01
+PATH=service.instance-id;     nnrf-oauth2-01
+requested-status;             registered
+PATH=ip-endpoint.id;          0
+PATH=ip-endpoint.id;          1
+PATH=ip-endpoint.id;          2
+dscp;                         REMOVE_BLOCK
+port;                         443
+PATH=heartbeat.default;       120
+PATH=heartbeat.nf-type;       ausf
+PATH=heartbeat.value;         90
+
+#GEORED configuration
+TARGET=SITE1*nssf*xml
+INSERT_AFTER=nf-profile;      <common><geo-red><remote-locator><distributed-system-id>2</distributed-system-id><transport>tcp</transport><port>8091</port><fqdn>${ccrc_nssf_sig_FQDN_2}</fqdn></remote-locator></geo-red></common>
+TARGET=SITE1*nrf_conf*xml
+INSERT_AFTER=nf-profile;      <common><geo-red><remote-locator><distributed-system-id>2</distributed-system-id><transport>tcp</transport><port>8091</port><fqdn>${ccrc_nrf_sig_FQDN_2}</fqdn></remote-locator></geo-red></common>
+TARGET=SITE2*nssf*xml
+-;                            _DUMMY>=>
+fqdn;                         ${ccrc_nssf_sig_FQDN_2}
+PATH=nf-profile.instance-id;  23a1de33-ec45-4cd6-a842-ce5bb3cba3d8
+INSERT_AFTER=nf-profile;      <common><geo-red><remote-locator><distributed-system-id>1</distributed-system-id><transport>tcp</transport><port>8091</port><fqdn>${ccrc_nssf_sig_FQDN}</fqdn></remote-locator></geo-red></common>
+TARGET=SITE2*nrf_conf*xml
+-;                            _DUMMY>=>
+PATH=nf-profile.instance-id;  21a1de11-ec45-4cd6-a842-ce5bb3cba3d8
+fqdn;                         ${ccrc_nrf_sig_FQDN_2}
+INSERT_AFTER=nf-profile;      <common><geo-red><remote-locator><distributed-system-id>1</distributed-system-id><transport>tcp</transport><port>8091</port><fqdn>${ccrc_nrf_sig_FQDN}</fqdn></remote-locator></geo-red></common>
+
+####### CCPC #######
+TARGET=ccpc*yaml
+# WA until issue is resolved in product  ###
+ROOT;                                             dmsextensions:\n%%imageCredentials:\n%%%%registry:\n%%%%%%url:%armdocker.rnd.ericsson.se
+ROOT;                                             iam-client-creation:\n%%imageCredentials:\n%%%%registry:\n%%%%%%url:%armdocker.rnd.ericsson.se
+ROOT;                                             topics:\n%%imageCredentials:\n%%%%registry:\n%%%%%%url:%armdocker.rnd.ericsson.se
+PATH=profiles.registry.url;                       ""
+############################################
+PATH=profiles.std-system.enabled;                 true
+PATH=profiles.small-system.enabled;               false
+PATH=profiles.cleartext-traffic-gw.enabled;       false
+PATH=profiles.cleartext-provisioning-gw.enabled;  false
+PATH=profiles.mtls-traffic-gw.enabled;            true
+PATH=profiles.mtls-provisioning-gw.enabled;       true
+PATH=tags.eric-ccpc-geored;                       false
+PATH=profiles.mtls-geored.enabled;                false
+PATH=cleartext-geored.enabled;                    false
+swltId;                                           STB-CCPC-6
+productType;                                      CCPC
+nodeName;                                         ccpc
+PATH=eric-ccrc-sbi-traffic-mtls.host;             ${ccrc_nrf_sig_FQDN}
+PATH=eric-smf-sbi-traffic-mtls.host;              "*.seli.gic.ericsson.se"
+PATH=hostValidation.allowedHosts;                 ${ccpc_5g_prov_FQDN}
+#added to speed up configuration propagation
+PATH=rxpcConfiguration.properties;            \n%%%%%%%%centralCacheTimeout:%5
+eric-pcf-session-management-policy-control;   \n%%sessionmanagementpolicycontrol:\n%%%%smpcConfiguration:\n%%%%%%properties:\n%%%%%%%%centralCacheTimeout:%5
+ipcansessionmanagement;                       \n%%%%ipsmConfiguration:\n%%%%%%properties:\n%%%%%%%%centralCacheTimeout:%5
+PATH=eric-stm-diameter.externalIPv4.enabled;  ${USE_IPV4}
+PATH=eric-stm-diameter.externalIPv6.enabled;  ${USE_IPV6}
+PATH=eric-pcf-peer-discoverer.healthCheck.resource; /nudr-dr/v2/policy-data/ues/imsi-100000/dummy/sm-data
+network_type;                                 ${DIAMETER_IP}
+-;                                            #CCRC2_GEORED_PLACEHOLDER=%%%%%%%%eric-ccrc2-sbi-traffic-mtls:\n%%%%%%%%%%enabled:%true\n%%%%%%%%%%host:%${ccrc_nrf_sig_FQDN_2}\n%%%%%%%%%%ports:\n%%%%%%%%%%%%http-secure:\n%%%%%%%%%%%%%%port:%443\n%%%%%%%%%%%%%%mode:%mTLS
+eric-probe-virtual-tap-broker;                \n%%imageCredentials:\n%%%%pullSecret:%selndocker\n%%%%registry:\n%%%%%%url:%selndocker.mo.sw.ericsson.se
+ROOT;                                         eric-pm-resource-monitor:\n%%imageCredentials:\n%%%%pullSecret:%selndocker\n%%%%registry:\n%%%%%%url:%selndocker.mo.sw.ericsson.se
+
+TARGET=ccpc*profile
+requested-status;              registered
+ipv4-address;                  REMOVE_BLOCK
+ipv6-address;                  REMOVE_BLOCK
+locality;                      Split
+fqdn;                          ${ccpc_5g_traffic_FQDN}
+capacity;                      100
+priority;                      1
+mcc;                           460
+mnc;                           000
+recovery-time;                 REMOVE_BLOCK
+port;                          443
+PATH=nf-profile.instance-id;   98aae42e-da25-4329-acf0-70e2986785aa
+PATH=service.instance-id;      npcf-smpolicycontrol
+PATH=ip-endpoint.id;           0
+pcf-info;                      REMOVE_BLOCK
+INSERT_AFTER=nf-profile;       <administrative-state>unlocked</administrative-state>\n<subs-id-type>supi-imsi</subs-id-type>
+allowed-nf-type;               smf
+sd;                            abAB01
+sst;                           0
+PATH=snssai.id;                0
+PATH=allowed-nssai.id;         0
+PATH=service.allowed-nssai.id; 0
+PATH=service.instance-id;      npcf-ue-policy-control
+PATH=ip-endpoint.id;           0
+PATH=allowed-nssai.id;         0
+PATH=service.instance-id;      npcf-am-policy-control
+PATH=ip-endpoint.id;           0
+PATH=allowed-nssai.id;         0
+
+####### EDA2 #######
+TARGET=eric-act
+CLEANUP_YAML;                                           true
+applicationId;                                          eda2
+timezone;                                               UTC
+domainName;                                             seli.gic.ericsson.se
+clusterName;                                            ${CLUSTER_ID}
+PATH=profile.small-telco-system;                        false
+PATH=profile.standard-telco-system;                     true
+customerId;                                             800141
+productType;                                            EDA
+swltId;                                                 STB-EDA2-5
+isExternal;                                             false
+trafficSeparation;                                      false
+PATH=eric_act_inbound_customized_adaptation.enabled;    false
+PATH=eric_act_proclog_stream_exporter.enabled;          false
+PATH=prov.loadBalancerIP;                               ""
+PATH=oam.loadBalancerIP;                                ""
+PATH=notif.loadBalancerIP;                              ""
+global;\n%%externalIPv6:\n%%%%enabled:%${USE_IPV6}\n%%externalIPv4:\n%%%%enabled:%${USE_IPV4}
+PATH=eric-tm-ingress-controller-cr.loadBalancerIP;      ${eda2_oam_VIP}
+PATH=eric-fh-snmp-alarm-provider.loadBalancerIP;        ${eda2_oam_VIP}
+PATH=eric-tm-ingress-controller-cr.externalIPv4.loadBalancerIP;      ${eda2_oam_VIP}
+PATH=eric-tm-ingress-controller-cr.externalIPv6.loadBalancerIP;      ${eda2_oam_VIP}
+PATH=eric-fh-snmp-alarm-provider.externalIPv4.loadBalancerIP;        ${eda2_oam_VIP}
+PATH=eric-fh-snmp-alarm-provider.externalIPv6.loadBalancerIP;        ${eda2_oam_VIP}
+PATH=eric-tm-ingress-controller-cr.ingressClass;        eda
+PATH=eric-tm-ingress-controller-cr-prov.enabled;        false
+PATH=eric-tm-ingress-controller-cr-notif.enabled;       false
+PATH=eric-data-wide-column-database-cd.size;            10G
+PATH=eric-data-wide-column-database-cd.enabled;         true
+sharedVIPLabel;                                         eda2-oam
+eric-act-activation-engine;                             \n%%initContainers:\n%%%%eric-act-hss-validator:\n%%%%%%imageName:%${VALIDATOR_IMAGE}\n%%imageCredentials:\n%%%%${VALIDATOR_IMAGE}:\n%%%%%%name:%eric-act-hss-validator\n%%%%%%tag:%latest\n%%%%%%repoPath:%proj_ema_docker_poc_adp\n%%%%%%registry:\n%%%%%%%%url:%armdocker.rnd.ericsson.se
+eric-act-inbound-interfaces;                            \n%%config:\n%%%%cai_status_server1:%enable\n%%%%disable_nonsecure_http:%false
+eric-act-inbound-mml;                                   \n%%config:\n%%%%telnet_allow_unsecure_connection:%true
+rackAwarenessMaxSkew;                                   COMMENT
+rackAwarenessTopologyKey;                               COMMENT
+rackAwarenessWhenUnsatisfiable;                         COMMENT
+PATH=activation.ipv6;                                   ${USE_IPV6}
+#replay configuration
+activation;                             \n%%%%proclogObfuscation:\n%%%%%%enabled:%false
+eric-act-tomcat;                        \n%%config:\n%%%%replay_enable:%true
+eric-act-web-server;                    \n%%config:\n%%%%replay_enable:%true
+PATH=eric-act-activation-engine.config; \n%%%%proclog_log_level:%INFO\n%%%%siteIdMapping:%[siteId=1\&MapiNEName=CCDM-Replay\&UdrNEName=UDR-Replay${SITE2_MAPPING}]
+
+####### CCES #######
+TARGET=cces*yaml
+swltId;                                            STB-CCES-8
+productType;                                       CCES
+PATH=global.externalIPv6.enabled;                  ${USE_IPV6}
+PATH=global.externalIPv4.enabled;                  ${USE_IPV4}
+PATH=tags.eric-sec-access-mgmt;                    false
+PATH=eric-cces-sbi-traffic-tls.host;               "*.seli.gic.ericsson.se"
+PATH=eric-cces-sbi-traffic-tls.port;               443
+PATH=eric-cces-sbi-traffic.host;                   "*.seli.gic.ericsson.se"
+PATH=eric-cces-sbi-traffic.port;                   443
+PATH=eric-nef-nidd.enabled;                        true
+PATH=eric-nef-devicetriggering.enabled;            true
+PATH=eric-nef-parameterprovision.enabled;          true
+#eric-nef-eventexposure;                            \n%%%%job:\n%%%%%%schedule:%"*%*%*%*%*"
+eric-nef-eventexposure;                            \n%%%%t8:\n%%%%%%deletion:\n%%%%%%%%waitForSouthboundResponse:%false
+PATH=eric-nef-msisdnlessmosms.enabled;             true
+scefIdMapping_numericalScefId;                     UNCOMMENT
+-;                                                 List.*numericalScefId=#
+-;                                                 The.*numericalScefId=#
+PATH=authenticationProxy.hostname;                 authproxy.ericsson.com
+PATH=eric-sec-access-mgmt.hostname;                iam.ericsson.com
+PATH=eric-apigm-admin-portal.env;                  \n%%%%%%ingress:\n%%%%%%%%iam:\n%%%%%%%%%%hostname:%"iam.ericsson.com"\n%%%%%%%%apigmPortal:\n%%%%%%%%%%hostname:%"portal.ericsson.com"\n%%%%%%%%%%port:%2443
+PATH=eric-nef-pfdmanagement.enabled;               true
+
+TARGET=nef_conf*xml
+communication-models;                              REMOVE_BLOCK
+dmc;                                               REMOVE_BLOCK
+bsf-discovery-disabled-headers;                    REMOVE_BLOCK
+pcf-discovery-disabled-headers;                    REMOVE_BLOCK
+network-type;                                      REMOVE_BLOCK
+general-authorization-enforcement;                 disabled
+access-token-request-level;                        nf-instance-level
+token-default-expire-time;                         21600
+qos-mode;                                          REMOVE_BLOCK
+data-set;                                          REMOVE_BLOCK
+nnef-analyticsexposure;                            REMOVE_BLOCK
+s6t;                                               REMOVE_BLOCK
+ipv4-address;                                      REMOVE_BLOCK
+ipv6-address;                                      REMOVE_BLOCK
+redirect-hosts;                                    REMOVE_BLOCK
+nf-set-id;                                         REMOVE_BLOCK
+requested-status;                                  registered
+PATH=nnef-pfdmanagement.default-caching-time;      50
+service-api-root;                                  https://${cces_5g_nbi_trust_traffic_FQDN}:443/hub
+notification-uri-root;                             https://${cces_5g_sbi_traffic_FQDN}:443
+sbi-service-api-root;                              https://${cces_5g_sbi_traffic_FQDN}:443
+PATH=nnef-afsessionwithqos.origin-host;            qos.ericsson.se
+PATH=nnef-afsessionwithqos.origin-realm;           ericsson.se
+PATH=nnef-afsessionwithqos.destination-host;       machine.source.server.realm.com
+PATH=nnef-afsessionwithqos.destination-realm;      source.server.realm.com
+PATH=nnef-afsessionwithqos.routing-policy;         local-configuration
+INSERT_INTO=nnef-eventexposure;                    <supported-features><supported-feature>1</supported-feature><supported-feature>2</supported-feature><supported-feature>3</supported-feature><supported-feature>4</supported-feature><supported-feature>5</supported-feature><supported-feature>6</supported-feature></supported-features>\n<nudm><unsubscription-of-expired-config><enabled>true</enabled><expiredTime>31536000</expiredTime></unsubscription-of-expired-config></nudm>
+api-support-capabilities;                          REMOVE_BLOCK
+PATH=nf-profile.instance-id;                       ddd9b5b3-fa57-4cb1-ace7-680914b0cea6
+PATH=nf-profile.fqdn;                              ${cces_5g_nbi_trust_traffic_FQDN}
+PATH=service.fqdn;                                 ${cces_5g_nbi_trust_traffic_FQDN}
+PATH=service.priority;                             1
+PATH=service.instance-id;                          nnef-pfdmanagement-01
+PATH=service.allowed-nf-type;                      smf
+PATH=ip-endpoint.id;                               0
+PATH=ip-endpoint.port;                             80
+PATH=service.fqdn;                                 ${cces_5g_sbi_traffic_FQDN}
+PATH=service.instance-id;                          cces-sbi-notification-receiver-01
+PATH=service.allowed-nf-type;                      udm
+destination-realm;                                 currently.not.used
+destination-host;                                  currently.not.used
+origin-host;                                       currently.not.used
+origin-realm;                                      currently.not.used
+result-code;                                       404
+result-codes;                                      503
+PATH=externalid.enable;                            true
+PATH=msisdn.enable;                                true
+multi-smsc-enable;                                 true
+precise-location;                                  REMOVE_BLOCK
+application-port-type;                             BOTH
+support-multi-temporal-condition;                  false
+producer;                                          REMOVE_BLOCK
+PATH=sbi-nf-reselection.enabled;                    true
+PATH=sbi-nf-reselection.max-reattempt-times;        2
+PATH=nnef-afsessionwithqos.transaction-log.enabled; true
+PATH=nnef-pfdmanagement.transaction-log.enabled;    true
+PATH=nnef-chargeableparty.patch-correction;         true
+PATH=nnef-chargeableparty.patch-204-enabled;        true
+PATH=nnef-chargeableparty.en-nb;                    true
+PATH=nnef-chargeableparty.app-id;                   true
+PATH=nnef-chargeableparty.delete-200-enabled;       false
+PATH=nnef-bdtpnegotiation.loc-bdt-5g;               false
+PATH=nnef-bdtpnegotiation.patch-correction;         false
+PATH=nnef-afsessionwithqos.imsi-required-by-pcrf;   false
+PATH=nnef-networkparameter.supported-feature;       1
+PATH=nnef-networkparameter.transaction-log.enabled; true
+PATH=nnef-trafficinfluence.transaction-log.enabled; true
+udr-policy-data-support-gpsi;                       true
+udm-discovery-disabled-headers;                     REMOVE_BLOCK
+udr-discovery-disabled-headers;                     REMOVE_BLOCK
+sbi-host-preference;                                REMOVE_BLOCK
+PATH=remote-nf-type-discovery-mode.remote-nf-type;  udm
+PATH=remote-nf-type-discovery-mode.mode;            nrf-only
+PATH=remote-nf-type-discovery-mode.condition-type;  nf-service
+PATH=remote-nf-type-discovery-mode.condition-value; nudm-ee
+PATH=nnef-bdtpnegotiation.transaction-log.enabled;  true
+retry-hss-on-udm-errors;                            REMOVE_BLOCK
+INSERT_AFTER=requested-heartbeat-timer;             <snssai>\n<id>0</id>\n<sst>0</sst>\n<sd>abAB01</sd>\n</snssai>
+
+TARGET=nef_diameter*xml
+max-connection-nr;                   10
+enabled;                             true
+tls-host-name-validation;            false
+tls-profile;                         REMOVE_BLOCK
+PATH=static-peer.address;            ${ccpc_4g_traffic_VIP}
+PATH=static-peer.peer-origin-host;   machine.source.server.realm.com
+PATH=static-peer.port;               3868
+PATH=node.origin-host;               nef.ericsson.se
+PATH=node.origin-realm;              ericsson.se
+-; {{MONTE-ORIGIN-HOST}}=monte.ericsson.se
+-; {{NIDD-ORIGIN-HOST}}=nidd.ericsson.se
+-; {{DEVICETRIGGERING-ORIGIN-HOST}}=devicetriggering.ericsson.se
+-; {{QOS-ORIGIN-HOST}}=qos.ericsson.se
+-; {{MSISDNLESSMOSMS-ORIGIN-HOST}}=msisdnlessmosms.ericsson.se
+-; {{QOSS6M-ORIGIN-HOST}}=qoss6m.ericsson.se
+-; {{NPC-ORIGIN-HOST}}=networkparameter.ericsson.se
+-; eric-nef-afsessionwithqos-s6m=eric-nef-afsessionwithqos
+
+############
+#cnHSS
+############
+TARGET=ccsm*diameter*xml
+PATH=node.id;                 CCSMHost
+origin-realm;                 ericsson.se
+origin-host;                  ccsm.ericsson.se
+product-name;                 CCSM
+node;                         CCSMHost
+
+TARGET=diameter*EPC*xml
+PATH=transport.local-endpoint.id;       CCSMEndpoint_sctp
+PATH=service.local-endpoint;            CCSMEndpoint_sctp
+TARGET=EIR*xml
+PATH=transport.local-endpoint.id;       CCSMEndpoint_sctp
+PATH=service.local-endpoint;            CCSMEndpoint_sctp
+TARGET=diameter*IMS*xml
+PATH=transport.local-endpoint.id;       CCSMEndpoint_tcp
+PATH=service.local-endpoint;            CCSMEndpoint_tcp
+
+#covering SWx and SLh conf
+TARGET=cm_EPC_S*xml
+PATH=node.id;                 CCSMHost
+origin-realm;                 ericsson.se
+origin-host;                  ccsm.ericsson.se
+realm;                        ericsson.se
+host;                         ccsm.ericsson.se
+oam-activated;                true
+oam-exposed;                  true
+product-name;                 CCSM
+node;                         CCSMHost
+PATH=transport.local-endpoint.id;       CCSMEndpoint_sctp
+PATH=service.local-endpoint;            CCSMEndpoint_sctp
+
+TARGET=cm_EPC_SLh*xml
+gmlc-id; gmlc.ericsson.se
+
+TARGET=cm_EPC_SWx*xml
+hss-epc-notification-callback-uri;      REMOVE_BLOCK
+PATH=filter-apn-names.apn-name;         apn06gnnv01.ericsson.se
+
+TARGET=hss_conf*xml
+PATH=nf-profile.instance-id;   33e1fe32-ac45-6cd6-a921-ee3dd3cba3d7
+fqdn;                          ${hss_epc_http_sig_FQDN}
+requested-status;              REMOVE_BLOCK
+port;                          443
+ipv4-address;                  REMOVE_BLOCK
+-; https=http
+INSERT_INTO=nf-profile;        <snssai>\n<id>0</id>\n<sst>0</sst>\n<sd>abAB01</sd>\n</snssai>\n<hss-info-list><id>hss-info</id><hss-info><group-id>groupid-000001</group-id></hss-info></hss-info-list>
+INSERT_AFTER=service;          <service>\n<instance-id>nhssepc-uecm</instance-id>\n<name>nhssepc-uecm</name>\n<scheme>http</scheme>\n<requested-status>registered</requested-status>\n<fqdn>${hss_epc_http_sig_FQDN}</fqdn>\n<allowed-nf-type>hss</allowed-nf-type>\n<ip-endpoint>\n<id>1</id>\n<transport>tcp</transport>\n<port>443</port>\n</ip-endpoint>\n</service>\n
+
+TARGET=hss_remote*xml
+-;                                  https=http
+expiry;                             REMOVE_BLOCK
+ipv4-address;                       REMOVE_BLOCK
+ipv6-address;                       REMOVE_BLOCK
+PATH=remote-nf-profile.instance-id; 141d1b7c-5103-11e9-8c09-174c95907e28
+PATH=remote-nf-service.instance-id; nudm-ueau
+PATH=remote-nf-service.instance-id; nudm-uecm
+PATH=remote-nf-profile.fqdn;        ${udm_5g_sig_FQDN}
+PATH=ip-endpoint.id;                0
+PATH=ip-endpoint.id;                1
+PATH=remote-nf-profile.port;        82
+PATH=remote-nf-profile.port;        82
+PATH=remote-nf-profile.instance-id; 33e1fe32-ac45-6cd6-a921-ee3dd3cba3d7
+PATH=remote-nf-service.instance-id; nhssepc-mt
+PATH=remote-nf-service.instance-id; nhssepc-uecm
+PATH=remote-nf-profile.fqdn;        ${hss_epc_http_sig_FQDN}
+PATH=ip-endpoint.id;                0
+PATH=ip-endpoint.id;                1
+PATH=remote-nf-profile.port;        80
+PATH=remote-nf-profile.port;        80
+INSERT_AFTER=version;               <fqdn>${udm_5g_sig_FQDN}</fqdn>
+INSERT_AFTER=version;               <fqdn>${udm_5g_sig_FQDN}</fqdn>
+INSERT_AFTER=version;               <fqdn>${hss_epc_http_sig_FQDN}</fqdn>
+INSERT_AFTER=version;               <fqdn>${hss_epc_http_sig_FQDN}</fqdn>
+INSERT_AFTER=remote-nf-service;     <remote-nf-service>\n<instance-id>nudm-mt</instance-id><fqdn>${udm_5g_sig_FQDN}</fqdn>\n<ip-endpoint>\n<id>0</id>\n<port>82</port>\n</ip-endpoint>\n<name>nudm-mt</name>\n<version>\n<api-version-in-uri>v1</api-version-in-uri>\n</version>\n<scheme>http</scheme>\n</remote-nf-service>
+INSERT_INTO=remote-nf-profile;      <remote-nf-profile>\n<instance-id>33e1fe32-ac45-6cd6-a921-ee3dd3cba3d7</instance-id>\n<type>hss</type>\n<fqdn>${hss_epc_http_sig_FQDN}</fqdn>\n<remote-nf-service>\n<instance-id>nhssepc-mt</instance-id>\n<name>nhssepc-mt</name>\n<version>\n<api-version-in-uri>v1</api-version-in-uri>\n</version>\n<fqdn>${hss_epc_http_sig_FQDN}</fqdn>\n<ip-endpoint>\n<id>0</id>\n<port>80</port>\n</ip-endpoint>\n<scheme>http</scheme>\n</remote-nf-service>\n<remote-nf-service>\n<instance-id>nhssepc-uecm</instance-id>\n<name>nhssepc-uecm</name>\n<version>\n<api-version-in-uri>v1</api-version-in-uri>\n</version>\n<fqdn>${hss_epc_http_sig_FQDN}</fqdn>\n<ip-endpoint>\n<id>0</id>\n<port>80</port>\n</ip-endpoint>\n<scheme>http</scheme>\n<allowed-nf-type>hss</allowed-nf-type>\n</remote-nf-service>\n</remote-nf-profile>
+
+TARGET=udm_remote*xml
+ipv4-address;                         ${hss_epc_http_sig_VIP}
+fqdn;                                 ${hss_epc_http_sig_FQDN}
+PATH=remote-nf-profile.instance-id;   00001111-49e8-463e-8f16-4dd6a15d3f41
+PATH=ip-endpoint.port;                80
+
+TARGET=udm_hssfe_remote*xml
+ipv4-address;                         ${HSS_HTTP_VIP}
+fqdn;                                 hssfe-hardcoded.seli.gic.ericsson.se
+PATH=remote-nf-profile.instance-id;   12301111-49e8-463e-8f16-4dd6a15d3f41
+PATH=ip-endpoint.port;                9095
+
+TARGET=udm*remote*xml
+ipv6-address;                         REMOVE_BLOCK
+-;                                    ipv.-address=${IP_STACK}-address
+oauth-ropc-data;                      REMOVE_BLOCK
+type;                                 hss
+INSERT_AFTER=type;                    <hss-info-list><id>1</id><hss-info><group-id>groupid-000001</group-id></hss-info></hss-info-list>
+INSERT_AFTER=ip-endpoint;             <scheme>http</scheme><version><api-version-in-uri>v1</api-version-in-uri><api-full-version>1.R15.1.1</api-full-version></version>
+PATH=ip-endpoint.id;                  0
+PATH=remote-nf-service.instance-id;   nhss-uecm-0
+PATH=remote-nf-service.name;          nhss-uecm
+
+#CCSM-COMMON
+TARGET=map_app*xml
+own-addresses;             MARK_BLOCK
+own-addresses;             REMOVE_BLOCK
+hlr-international-address; 49172401111
+national-address;          31152010002
+international-address;     49152010001
+INSERT_AFTER=map-application; <features><sms-service><oam-activated>true</oam-activated><oam-exposed>true</oam-exposed></sms-service></features>
+INSERT_AFTER=features; <sms-engine><deployment-option>5gc-only</deployment-option></sms-engine>
+
+#EIR
+TARGET=eir_conf
+PATH=nf-profile.instance-id;       77fba27d-6a44-4074-8d9a-fe0add4fc6ef
+requested-status;  		   REMOVE_BLOCK
+PATH=ip-endpoint.port;             443
+ipv4-address;                      REMOVE_BLOCK
+fqdn;                              ${eir_5g_sig_FQDN}
+query-msisdn;                      true
+INSERT_AFTER=eic;                  <features>\n<http-notifications><oam-activated>true</oam-activated><oam-exposed>true</oam-exposed></http-notifications>\n<eir-4g><oam-activated>true</oam-activated><oam-exposed>true</oam-exposed></eir-4g>\n<eir-2g3g><oam-activated>true</oam-activated><oam-exposed>true</oam-exposed></eir-2g3g>\n</features>
+INSERT_AFTER=nf-profile;           <http-notifications><notification-server-address><fqdn>pipeline-framework.seli.gic.ericsson.se</fqdn><port>4443</port></notification-server-address><heartbeat-timer-interval>1000</heartbeat-timer-interval></http-notifications>\n<diameter><server><realm>ericsson.se</realm><host>ccsm.ericsson.se</host></server><timeout-incoming-request>5000</timeout-incoming-request><timeout-outgoing-request>1000</timeout-outgoing-request><enable-trace>false</enable-trace><request-reattempts>5</request-reattempts><reattempt-delay-time>1000</reattempt-delay-time></diameter>
+INSERT_INTO=nf-profile;            <snssai>\n<id>0</id>\n<sst>0</sst>\n<sd>abAB01</sd>\n</snssai>
+
+TARGET=hsm-arpf
+imsi-prefix;             12345
+crypto-officer-password; udm123Adm
+udm-hsm-instance-unavailable-threshold; 60
+INSERT_INTO=features;    <umts-aka><oam-activated>true</oam-activated></umts-aka>
+
+#Event exposure features
+TARGET=event_exposure
+ipv4-address; REMOVE_BLOCK
+port;         443
+fqdn;         ${udm_5g_sig_FQDN}
+INSERT_AFTER=ee-change-of-supi-pei-association; <ee-any-ue><oam-activated>true</oam-activated><oam-exposed>true</oam-exposed></ee-any-ue>
+
+############
+#END
+############

@@ -1,0 +1,6 @@
+{
+  "networkElementType": "UDR_SAPC",
+  "routingMethod": "UnconditionalRouting",
+  "instanceType": "NetworkElementGroup",
+  "instance": "UDR-GROUP"
+}

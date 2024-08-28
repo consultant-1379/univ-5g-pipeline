@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <edit-config>
+    <target><running/></target>
+    <config xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0">
+      <system xmlns="urn:ietf:params:xml:ns:yang:ietf-system">
+        <authentication>
+          <user>
+           <name>admin</name>
+           <password>WeakPas-1</password>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">ausf_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">eir_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">udm_sensitive_key_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">udm_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">system-admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">nrfagent-admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">ccsm-admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">hssepc_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">hssims_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">eir_security_admin</groups>
+         </user>
+         <user>
+           <name>admin-sec-netconf</name>
+           <password>WeakPas-1</password>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">udm_security_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">udm_sensitive_key_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">udm_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">ausf_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">eir_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">ausf_security_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">eir_security_admin</groups>
+           <groups xmlns="urn:rdns:com:ericsson:oammodel:ericsson-system-ext">system-security-admin</groups>
+         </user>
+       </authentication>
+      </system>
+    </config>
+  </edit-config>
+  </rpc>
+  <close-session/>

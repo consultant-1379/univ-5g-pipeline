@@ -1,0 +1,29 @@
+{
+  "name": "UDR2-Replay",
+  "protocolType": "LDAP",
+  "version": "",
+  "active": true,
+  "protocolAttributes": {
+    "Principal": "cudbUser=PGReplayUser,ou=admin,dc=o,dc=com ",
+    "Credentials": "PGReplayUser",
+    "HeartbeatDN": "dc=o,dc=com",
+    "ResponseTimeout": "11000",
+    "RetriesTimeInterval": "1000",
+    "BlockingTimeout": "10000",
+    "NrOfRetries": "3",
+    "Port": "636",
+    "MaxPoolSize": "10",
+    "RetryFactor": "2",
+    "ConnTimeout": "11000",
+    "IdleTimeout": "1",
+    "Host": "${ccdm_4g_prov_FQDN_2}",
+    "LongRetriesTimeInterval": "15000",
+    "BinaryAttributeConfig": "UDC",
+    "BinaryAttributes": "",
+    "MutualAuthentication": "true",
+    "TlsVersion": "TLS 1.3",
+    "TlsPem": "eda2-cacert.pem",
+    "Secure": "true",
+    "MTlsPem": "eda2-clientkey.pem"
+  }
+}

@@ -1,0 +1,72 @@
+@Library("PipelineGlobalLibrary") _
+import com.ericsson.ci.mason.Mason2
+
+def _unit = "spinnint"
+def _credentials = "userpwd-adp"
+def _branch = "master"
+def _refspec = ""
+def _gerrit_change = ""
+def _patchset_number = ""
+def _gerrit_user = ""
+def _gerrit_pass = ""
+def _cloud = "kubernetes"
+def _VOTE_MESSAGE = "UNIV 5g pipeline tests failed"
+def _VOTE_LABEL = "Verified=\"-1\""
+def _TESTS_RESULT = params.TESTS_RESULT?: 'FAIL'
+def _DEPLOY_RESULT = params.DEPLOY_RESULT?: 'FAIL'
+
+if ( System.getenv("JENKINS_HOME")) { // Jenkins execution
+    _branch = params.GERRIT_BRANCH?: 'master'
+    _refspec = params.GERRIT_REFSPEC?: ''
+    // Tokenize to get the Gerrit change number from the parameter "ref/changes/34/1234/1" -> 1234
+    _gerrit_change = _refspec.tokenize("/")[3]
+    // Tokenize to get the Gerrit change number from the parameter "ref/changes/34/1234/1" -> 1
+    _patchset_number = _refspec.tokenize("/")[4]
+    _cloud = params.CLOUD?: _cloud
+    // Based on Job parameter decide the voting decission
+    if ( _TESTS_RESULT == 'SUCCESS' && _DEPLOY_RESULT == 'SUCCESS'){
+        _VOTE_MESSAGE = "UNIV 5g pipeline tests passed"
+        _VOTE_LABEL = "Verified=\"+1\""
+    }
+    // Import Gerrit credentials
+    withCredentials([usernamePassword(credentialsId: "${_credentials}",
+                                      usernameVariable: "GERRIT_USER",
+                                      passwordVariable: "GERRIT_PASS")
+                    ]){
+        _gerrit_user = GERRIT_USER
+        _gerrit_pass = GERRIT_PASS
+    }
+
+    withCredentials([string(credentialsId: "armpass-adp",
+                            variable: 'ARM_TOKEN')
+                    ]) {
+    }
+} else { // Local Execution
+        _gerrit_user = ''       // Assign value to this credential locally
+        _gerrit_pass = ''       // Assign value to this credential locally
+}
+
+def result = Mason2.ciPipeline(this) {
+    cloud(_cloud)
+    parallel(false)
+    unit(_unit)
+    script {
+        shell("gerrit-vote") {
+            container('ihc-auto', 'armdocker.rnd.ericsson.se/proj-adp-cicd-drop/adp-int-helm-chart-auto', 'latest')
+            if ( !System.getenv("JENKINS_HOME")) { // Local execution
+                env("KUBECONFIG", "./.conf")
+                // If you are executing locally and you would like to test towards your own minikube
+                // or a test cluster you just need to copy the admin.conf file to the root of the repository
+            }
+            env("GERRIT_USERNAME", _gerrit_user)
+            env("GERRIT_PASSWORD", _gerrit_pass)
+            env("GERRIT_CHANGE", _gerrit_change)
+            env("PATCHSET_NUMBER", _patchset_number)
+            cmd("""
+            gerrit review --change \${GERRIT_CHANGE} --revision \${PATCHSET_NUMBER} \\
+            --message "${_VOTE_MESSAGE}" --setLabel ${_VOTE_LABEL}
+            """)
+        }
+    }
+}
+

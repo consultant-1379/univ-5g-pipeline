@@ -1,0 +1,32 @@
+{
+  "email": "cai3guser@eda.local",
+  "user_name": "cai3guser",
+  "password": "Cai3guser!",
+  "user_info": {
+    "account_type": "service_account",
+    "email": "cai3guser@eda.local",
+    "iss": "https://authn.eda.local"
+  },
+  "lockable": true,
+  "locked": false,
+  "user_info_internal": {
+    "max_cai3g_sessions": 0,
+    "admin_domain": [],
+    "description": "cai3guser",
+    "max_cai_sessions": 0,
+    "access_groups": [
+      "Full Authority",
+      "CLI Full Authority",
+      "MML Full Authority",
+      "SR-API Full Authority"
+    ],
+    "public_key": "",
+    "max_mml_sessions": 0,
+    "max_ssh_sessions": 0,
+    "roles": [
+      "Default role",
+      "System setup manager"
+    ],
+    "min_HLR_sustainable": 0
+  }
+}

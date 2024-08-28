@@ -1,0 +1,30 @@
+{
+  "name": "CCDM2-Replay",
+  "protocolType": "M-API",
+  "version": "",
+  "active": true,
+  "protocolAttributes": {
+    "baseUri": "mapi/v1",
+    "nrOfRetries": "3",
+    "oauthTokenHost": "${IPV6_L}${ccdm_5g_prov_VIP_2}${IPV6_R}",
+    "BlockingTimeout": "10000",
+    "host": "${IPV6_L}${ccdm_5g_prov_VIP_2}${IPV6_R}",
+    "truststoreFile": "/app/client-certificate/mykeystore_fqdn.p12",
+    "truststorePassword": "Admin123",
+    "basicAuthUsername": "",
+    "oauthTokenBaseUri": "auth/realms/oam/protocol/openid-connect/token",
+    "responseTimeout": "11000",
+    "retryFactor": "1",
+    "oauthClientId": "replay-client",
+    "oauthClientSecret": "replay-secret",
+    "acceptedResponseCode": "200",
+    "port": "443",
+    "MaxPoolSize": "100",
+    "retryErrorResponseCode": "",
+    "oauthTokenPort": "443",
+    "retryTimeInterval": "1000",
+    "IdleTimeout": "1",
+    "connectionTimeout": "11000",
+    "secure": "true"
+  }
+}

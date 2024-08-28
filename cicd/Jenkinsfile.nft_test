@@ -1,0 +1,262 @@
+@Library("PipelineGlobalLibrary") _
+import com.ericsson.ci.mason.Mason2
+import java.text.SimpleDateFormat
+
+def _project = "5G_automation/integration-test"
+def _branch = "master"
+
+def _unit = "spinnint"
+def _credentials = "userpwd-adp"
+def _gerrit_user = ""
+def _gerrit_pass = ""
+def _cloud = "eccd-ibd-udm31582"
+def _tg = "seliius06917"
+def _kubeConf = _cloud + "_admin.conf"
+def _xray_id = ""
+
+def _automation_testcase_docker_tag = params.AUTOMATION_TESTCASES_DOCKER_TAG?: "latest"
+def _automation_testcases_container = [name: "automation-test-cases", url:"armdocker.rnd.ericsson.se/proj-udm-5g-integration-test/udm5g-nonfunctional-testcases", tag: _automation_testcase_docker_tag]
+def _suite_file = params.SUITE_FILE
+def _client_id = params.CLIENT_ID
+def _client_secret = params.CLIENT_SECRET
+def _ccsm_cve_mix_rate = params.CCSM_CVE_MIX_RATE
+def _log_dir = "JCAT_LOGS"
+def _jcat_logging_level = params.JCAT_DEBUG ? 'debug' : 'info'
+def _mibs_dir = ".snmp/mibs"
+def _timestamp = new SimpleDateFormat("MMddyyyyHHmmss").format(new Date())
+def _arm_url = "https://arm.rnd.ki.sw.ericsson.se/artifactory/proj-univ-5g-pipeline-generic-local/"
+def _arm_artifact_name = _log_dir + "-" + _timestamp + "-" + env.BUILD_NUMBER + ".tgz"
+def _arm_logs_url = _arm_url + _arm_artifact_name
+def _jenkins_job_description = "Download JCAT logs: <a href=\"" + _arm_logs_url + "\" target=\"_blank\">" + _arm_logs_url + "</a>"
+String jira_pat_token = common.getUserPassFromCredential("userjirapat-adp", "password")
+
+if (System.getenv("JENKINS_HOME")) { // Jenkins execution
+    _cloud = params.CLOUD?: _cloud
+    _tg = params.TG?: _tg
+    _kubeConf = _cloud + "_admin.conf"
+    _xray_id = params.XRAY_ID
+    
+    // Import Gerrit credentials
+    withCredentials([usernamePassword(credentialsId: "${_credentials}",
+                                      usernameVariable: "GERRIT_USER",
+                                      passwordVariable: "GERRIT_PASS")
+                    ]){
+        _gerrit_user = GERRIT_USER
+        _gerrit_pass = GERRIT_PASS
+    }
+} else { // Local Execution
+        _gerrit_user = ''       // Assign value to this credential locally
+        _gerrit_pass = ''       // Assign value to this credential locally
+}
+
+def result = Mason2.ciPipeline(this) {
+    additionalData("product", 'UNIV')
+    additionalData("cl_pipeline", 'CLe0')
+    additionalData("owner_name": 'UNIV')
+    additionalData("owner_email": 'PDLUDM5GIN@pdl.internal.ericsson.com')
+    additionalData("artifact_name", 'UNIV-5G-Solution')
+    timeout(960)
+    cloud(_cloud)
+    nodeSelector(_tg)
+    executor("agent")
+    parallel(false)
+    unit(_unit)
+    checkout {
+        gerrit("checkout") {
+            project(_project)
+            credentials(_credentials)
+            branch(_branch)
+            advancedsubopts {
+                recursiveupdate(true)
+                useparentcreds(true)
+                timeout(20)
+            }
+            cleanbeforecheckout()
+            advancedcheckout {
+                timeout(40)
+            }
+            wipeoutrepo()
+        }
+    }
+
+    script {
+        shell("Download mibs") {
+            dind(true)
+            privileged(true)
+            when("ALWAYS")
+            credentials('arm-sero-identity-token-adp')
+            container(_automation_testcases_container.name, _automation_testcases_container.url, _automation_testcases_container.tag, true)
+            cmd("""
+                curl -u "\${username}:\${passwd}" -o ./mibs.tgz https://arm.rnd.ki.sw.ericsson.se/artifactory/proj-integration-mibs-generic-local/mibs.tgz
+                mkdir -p \".snmp\"
+                tar xzf mibs.tgz -C \".snmp\"
+                echo "mibs +ERICSSON-ALARM-PC-MIB:ERICSSON-ALARM-TC-MIB:ERICSSON-ALARM-XPATH-MIB:ERICSSON-TC-MIB:ERICSSON-TOP-MIB" >>\".snmp/snmp.conf\"
+            """)
+        }
+    }
+
+    script {
+        shell("Run test case suite") {
+            dockerNetwork("host")
+            dind(true)
+            privileged(true)
+            when("ALWAYS")
+            kubeConfig(_kubeConf)
+            container(_automation_testcases_container.name, _automation_testcases_container.url, _automation_testcases_container.tag, true)
+            env("XRAY_ID", _xray_id)
+            cmd("""
+
+                EDA_CLIENT_FILE=\"eda.client.yaml\"
+                echo \"clientId: \"${_client_id} > \${EDA_CLIENT_FILE}
+                echo \"clientSecret: \"${_client_secret} >> \${EDA_CLIENT_FILE}
+                echo \"replayClientId: \"${_client_id} >> \${EDA_CLIENT_FILE}
+                echo \"replayClientSecret: \"${_client_secret} >> \${EDA_CLIENT_FILE}
+                echo -n \"refreshToken: \" >> \${EDA_CLIENT_FILE}
+                EDA2_FQDN=\$(kubectl get httpproxy -A | grep eric-act-cna-oam-ingress | awk '{print \$3}')
+                EDA2_PROV_FQDN=\$(kubectl get httpproxy -A | grep eric-act-cna-prov-ingress | awk '{print \$3}')
+                CCSM_DIA_ADDERSS=\$(kubectl get svc -n eric-ccsm | grep eric-stm-diameter-traffic-sctp | awk '{print \$4}')
+
+                curl -sS --insecure -X POST \\
+                  -H 'Content-Type:application/x-www-form-urlencoded' \\
+                  -d 'client_id=${_client_id}&client_secret=${_client_secret}&grant_type=password&username=cai3guser&password=Cai3guser!&scope=openid+scopes.ericsson.com/activation/aapi.write+scopes.ericsson.com/activation/aapi.read+scopes.ericsson.com/activation/log-consolidation.export+scopes.ericsson.com/activation/activation_logic_properties.read+scopes.ericsson.com/activation/activation_logic_properties.write+scopes.ericsson.com/activation/network_element_management.read+scopes.ericsson.com/activation/network_element_management.write+scopes.ericsson.com/activation/activation_logic_properties.read+scopes.ericsson.com/activation/activation_logic_properties.write' \\
+                  https://\${EDA2_FQDN}:443/oauth/v1/token | jq -r .refresh_token >> \${EDA_CLIENT_FILE}
+                cat \${EDA_CLIENT_FILE}
+
+                CCPC_CLIENT_FILE=\"ccpc.client.yaml\"
+                echo \"clientId: ccpc-client\" > \${CCPC_CLIENT_FILE}
+                echo \"clientSecret: customsecret\" >> \${CCPC_CLIENT_FILE}
+                cat \${CCPC_CLIENT_FILE}
+
+                cp \${KUBECONFIG} admin.conf
+                ADMIN_CONF=admin.conf
+                JAR_FILE=\$(find /root -name udm5g-nonfunctional-testcases.jar)
+                echo \"Printing JAR, to see image creation date\"
+                ls -l \${JAR_FILE}
+
+                export PS1=\"seliius1.dockerlocal\$ \"
+
+                kubectl get cm -n jenkins-tools jenkins-key -o jsonpath="{.data.clusterInfo}" > clusterInfo.yaml
+                kubectl get cm -n jenkins-tools jenkins-key -o jsonpath="{.data.privateKey}" > privateKey
+                if [ \$(cat clusterInfo.yaml | wc -w) -eq 0 ] || [ \$(cat privateKey | wc -w) -eq 0 ]; then
+                  exit 98
+                fi
+                chmod 600 privateKey
+                sed -i 's/sec.username:.*/sec.username: admin-sec-netconf/' \${WORKSPACE}/udm5g-extensions/src/main/resources/credentials/default_credentials.yaml
+
+                mkdir -p src/main/resources
+                unzip \${JAR_FILE} \"dtg/*\" -d src/main/resources
+                unzip \${JAR_FILE} \"dtgProperties/*\" -d src/main/resources
+
+                sed -i "s/class=\\\"/class=\\\"com.ericsson.commonlibrary.cd.model./" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/test-configuration-data/*.xml
+
+                sed -i "s+src+\${WORKSPACE}/udm5g-nonfunctional-testcases/src+" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/test-configuration-data/traffic-data.xml
+
+                sed -i "s+/proj/udm_univ/5G_integration/Deployment_values_Configs/SAN_certs/+\${WORKSPACE}/udm5g-extensions/src/main/resources/certificates/jenkins/+" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/dtgProperties/*.properties
+
+                FQDN_HOSTNAME_VAR=\$(hostname)
+                IP_HOSTNAME_VAR=\$(ifconfig -a ens36 | grep "inet " | awk '{print \$2}' | cut -d ":" -f 2)
+
+                sed -i "s/^ *HOST.*.seli.gic.ericsson.se/HOST = \${FQDN_HOSTNAME_VAR}.seli.gic.ericsson.se/" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/dtgProperties/*.properties
+                sed -i "s/^ *SNI_PEER_HOST.*oam.*.seli.gic.ericsson.se/SNI_PEER_HOST = \${EDA2_FQDN}/" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/dtgProperties/*.properties
+                sed -i "s/^ *DESTINATION_HOST.*oam.*.seli.gic.ericsson.se/DESTINATION_HOST =  \${EDA2_FQDN}/" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/dtgProperties/*.properties
+                sed -i "s/^ *SNI_PEER_HOST.*prov.*.seli.gic.ericsson.se/SNI_PEER_HOST = \${EDA2_PROV_FQDN}/" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/dtgProperties/*.properties
+                sed -i "s/^ *DESTINATION_HOST.*prov.*.seli.gic.ericsson.se/DESTINATION_HOST =\${EDA2_PROV_FQDN}/" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/dtgProperties/*.properties
+                sed -i "s/^ORIGIN_ADDRESS.*[0-9].*\\.[0-9].*\\.[0-9].*\\.[0-9]/ORIGIN_ADDRESS = \${IP_HOSTNAME_VAR}/" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/dtgProperties/*.properties
+                sed -i "s/^DESTINATION_ADDRESS.*[0-9].*\\.[0-9].*\\.[0-9].*\\.[0-9]/DESTINATION_ADDRESS = \${CCSM_DIA_ADDERSS}/" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/dtgProperties/*.properties
+                sed -i "s/^HOST.*[0-9].*\\.[0-9].*\\.[0-9].*\\.[0-9]/HOST = \${IP_HOSTNAME_VAR}/" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/dtgProperties/*.properties
+
+                sed -i "s/RATE.*/RATE = ${_ccsm_cve_mix_rate}/" \${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/dtgProperties/CCSM_CVE_MIX.properties
+
+                echo "CHART VERSIONS:"
+                helm list --all-namespaces
+                java \\
+                  -Dkube.config.file=clusterInfo.yaml \\
+                  -Dbinaries.path=/usr/local/bin \\
+                  -Denable.mtls=true \\
+                  -Ddevelopment.mode=true \\
+                  -Dmibs.path=${_mibs_dir} \\
+                  -Dlogdir=\"\${WORKSPACE}/${_log_dir}\" \\
+                  -Dcerts.config.file=\"\${WORKSPACE}/udm5g-extensions/src/main/resources/certificates/jenkins/certs.yaml\" \\
+                  -Dcredentials.file=\"\${WORKSPACE}/udm5g-extensions/src/main/resources/credentials/default_credentials.yaml\" \\
+                  -Djcat.logging=${_jcat_logging_level} \\
+                  -Deda2.client.file=\"\${EDA_CLIENT_FILE}\" \\
+                  -Dccpc.client.file=\"\${CCPC_CLIENT_FILE}\" \\
+                  -Dexternal.test.param.path=\"\${WORKSPACE}/udm5g-nonfunctional-testcases/src/main/resources/test-configuration-data\" \\
+                  -jar \"\${JAR_FILE}\" \\
+                  ${_suite_file} > /dev/null || echo "[WARNING] Some TCs have failed!"
+
+                jenkinsXml=\$(find \${WORKSPACE}/${_log_dir} -name jenkins.xml)
+                if [ -n \${XRAY_ID} ]; then
+                  curl -H "Authorization: Bearer ${jira_pat_token}" -k -L \\
+                    --request POST \\
+                    --url 'https://eteamproject.internal.ericsson.com/rest/raven/1.0/import/execution/junit?testExecKey='\${XRAY_ID}'' \\
+                    --header 'Content-Type: multipart/form-data' \\
+                    --form 'file=@'\${jenkinsXml}'';
+                fi
+
+                jcatStatistics=\$(find \${WORKSPACE}/${_log_dir} -name JcatStatistics.txt)
+                cat \${jcatStatistics} > test.properties
+                sed -i '1s/^/TEST_RESULT=/' test.properties
+                cat \${jcatStatistics}
+                testResult=\$(cat \${jcatStatistics} | jq .testSuiteVerdict)
+                if [ \${testResult} != '\"PASS\"' ] ; then
+                    exit 99
+                fi
+            """)
+        }
+    }
+
+    jenkins {
+        dsl("showTestResult"){
+            when("ALWAYS")
+            cmd {
+                junit allowEmptyResults: true, testResults: _log_dir + '/**/jenkins.xml'
+            }
+        }
+    }
+
+    jenkins {
+        dsl("Archive JCAT logs"){
+            when("ALWAYS")
+            cmd {
+                archiveArtifacts allowEmptyArchive: true, artifacts: _log_dir + '/**, test.properties', onlyIfSuccessful: false
+            }
+        }
+    }
+
+    script {
+        shell("Package JCAT logs") {
+            env("_arm_artifact_name", _arm_artifact_name)
+            env("_log_dir", _log_dir)
+            dind(true)
+            privileged(true)
+            when("ALWAYS")
+            container(_automation_testcases_container.name, _automation_testcases_container.url, _automation_testcases_container.tag, true)
+            cmd("""
+                [ -d \"\${_log_dir}\" ] && tar -cvf \"\${_arm_artifact_name}\" \"\${_log_dir}\" --exclude='.helm'
+            """)
+        }
+    }
+
+    store {
+        arm("push-jcat-logs") {
+            depends("Run test case suite")
+            credentials('userpwd-adp')
+            artifact(_arm_artifact_name)
+            dateAttach(false)
+            compress(false)
+            onlyIfExists(true)
+            url(_arm_url)
+            when("ALWAYS")
+        }
+    }
+
+   jenkins {
+        dsl("Add link in description"){
+            when("ALWAYS")
+            cmd {
+                buildDescription _jenkins_job_description
+            }
+        }
+    }
+}

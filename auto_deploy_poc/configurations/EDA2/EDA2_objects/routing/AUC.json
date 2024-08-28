@@ -1,0 +1,7 @@
+{
+  "networkElementType" : "AUC_VALIDATION",
+  "routingMethod" : "UnconditionalRouting",
+  "instance" : "HLR-FE",
+  "instanceType" : "NetworkElement",
+  "rules" : [ ]
+}

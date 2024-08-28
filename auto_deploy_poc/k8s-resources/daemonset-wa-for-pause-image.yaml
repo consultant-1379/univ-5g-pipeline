@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: wa-for-pause-image
+spec:
+  selector:
+    matchLabels:
+      name: wa-for-pause-image
+  template:
+    metadata:
+      labels:
+        name: wa-for-pause-image
+    spec:
+      containers:
+      - name: wa-for-pause-image
+        image: ${SANDBOX_IMAGE}
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop: ["ALL"]

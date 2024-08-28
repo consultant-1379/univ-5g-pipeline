@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <edit-config>
+    <target><running/></target>
+	<default-operation>replace</default-operation>
+    <config xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0">
+      <?xml version="1.0" encoding="UTF-8"?>
+   <ss7 xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7">
+      <name>eric-ccsm-mapproxy-1</name>
+      <signaling-network>
+         <id>1</id>
+         <network-indicator>ni2</network-indicator>
+         <network-standard>itu</network-standard>
+         <local-signaling-point>
+            <node-id>1</node-id>
+            <code>101</code>
+            <importance-flag xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">not-add-importance-parameter</importance-flag>
+            <mti-flag xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">not-add-mti-parameter</mti-flag>
+            <remote-broadcast xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">allow</remote-broadcast>
+            <usage-of-cong-timer xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">initiate-when-ssc-is-received</usage-of-cong-timer>
+            <ssp-sending xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">send-ssp</ssp-sending>
+            <sst-sending xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">always</sst-sending>
+            <general-message-priority xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">2</general-message-priority>
+            <hop-counter-for-sclc xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">8</hop-counter-for-sclc>
+            <message-priority-for-sst xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">1</message-priority-for-sst>
+            <msb-of-address-indicator-usage xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">not-used</msb-of-address-indicator-usage>
+            <node-usage-by-other-user xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">not-used</node-usage-by-other-user>
+            <node-usage-by-tcap xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">used</node-usage-by-tcap>
+            <node-usage-for-srp xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">not-used</node-usage-for-srp>
+            <outgoing-smi-value xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">multiplicity-unknown</outgoing-smi-value>
+            <first-sst-sending xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">send-by-timer-start</first-sst-sending>
+            <gt-filler-check xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">not-allowed</gt-filler-check>
+            <swap-mode xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">swap-data</swap-mode>
+            <timer-attack xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">3</timer-attack>
+            <timer-congested xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">300</timer-congested>
+            <timer-congestion xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">100</timer-congestion>
+            <timer-decay xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">6</timer-decay>
+            <timer-reassembly xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">150</timer-reassembly>
+            <timer-status-information xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">300</timer-status-information>
+            <local-sap xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">
+               <subsystem-number>6</subsystem-number>
+               <s1-opc-in-cg-pa>not-used</s1-opc-in-cg-pa>
+               <s2-dpc-in-cd-pa>keep</s2-dpc-in-cd-pa>
+               <s3-cg-pa-control>transparent</s3-cg-pa-control>
+               <s4-opc-and-dpc-in-user-part>not-used</s4-opc-and-dpc-in-user-part>
+               <s5-ssn-in-cg-pa>not-remove</s5-ssn-in-cg-pa>
+               <s6-cg-pa-and-spc-in-ui>not-used</s6-cg-pa-and-spc-in-ui>
+            </local-sap>
+            <local-sap xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">
+               <subsystem-number>9</subsystem-number>
+               <s1-opc-in-cg-pa>not-used</s1-opc-in-cg-pa>
+               <s2-dpc-in-cd-pa>keep</s2-dpc-in-cd-pa>
+               <s3-cg-pa-control>transparent</s3-cg-pa-control>
+               <s4-opc-and-dpc-in-user-part>not-used</s4-opc-and-dpc-in-user-part>
+               <s5-ssn-in-cg-pa>not-remove</s5-ssn-in-cg-pa>
+               <s6-cg-pa-and-spc-in-ui>not-used</s6-cg-pa-and-spc-in-ui>
+            </local-sap>
+            <remote-sap xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">
+               <remote-sign-point>5201</remote-sign-point>
+               <subsystem-number>8</subsystem-number>
+            </remote-sap>
+			<remote-sap xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">
+               <remote-sign-point>5201</remote-sign-point>
+               <subsystem-number>7</subsystem-number>
+            </remote-sap>
+            <gt-translator xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">
+               <id>1</id>
+               <primary-termination-indicator>do-not-change</primary-termination-indicator>
+               <load-share-indicator>backup-secondary-route</load-share-indicator>
+               <numbering-plan>e163-e164</numbering-plan>
+               <nature-of-address>4</nature-of-address>
+               <translation-type>0</translation-type>
+               <number-series>34123456789</number-series>
+               <primary-gt-destination>1</primary-gt-destination>
+               <gt-destination>
+                  <id>1</id>
+                  <sap xmlns:sccp_node_e="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node" xmlns:ss7_e="urn:rdns:com:ericsson:oammodel:ericsson-ss7">/ss7_e:ss7[ss7_e:name='eric-ccsm-mapproxy-1']/ss7_e:signaling-network[ss7_e:id='1']/ss7_e:local-signaling-point[ss7_e:node-id='1']/sccp_node_e:remote-sap[sccp_node_e:remote-sign-point='5201'][sccp_node_e:subsystem-number='8']</sap>
+               </gt-destination>
+            </gt-translator>
+            <gt-translator xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">
+               <id>2</id>
+               <primary-termination-indicator>do-not-change</primary-termination-indicator>
+               <load-share-indicator>backup-secondary-route</load-share-indicator>
+               <numbering-plan>e163-e164</numbering-plan>
+               <nature-of-address>4</nature-of-address>
+               <translation-type>0</translation-type>
+               <number-series>35*</number-series>
+               <primary-gt-destination>1</primary-gt-destination>
+               <gt-destination>
+                  <id>1</id>
+                  <sap xmlns:sccp_node_e="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node" xmlns:ss7_e="urn:rdns:com:ericsson:oammodel:ericsson-ss7">/ss7_e:ss7[ss7_e:name='eric-ccsm-mapproxy-1']/ss7_e:signaling-network[ss7_e:id='1']/ss7_e:local-signaling-point[ss7_e:node-id='1']/sccp_node_e:remote-sap[sccp_node_e:remote-sign-point='5201'][sccp_node_e:subsystem-number='7']</sap>
+               </gt-destination>
+            </gt-translator>
+            <gt-translator xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">
+               <id>3</id>
+               <primary-termination-indicator>do-not-change</primary-termination-indicator>
+               <load-share-indicator>backup-secondary-route</load-share-indicator>
+               <numbering-plan>e163-e164</numbering-plan>
+               <nature-of-address>4</nature-of-address>
+               <translation-type>0</translation-type>
+               <number-series>49*</number-series>
+               <primary-gt-destination>1</primary-gt-destination>
+               <gt-destination>
+                  <id>1</id>
+                  <sap xmlns:sccp_node_e="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node" xmlns:ss7_e="urn:rdns:com:ericsson:oammodel:ericsson-ss7">/ss7_e:ss7[ss7_e:name='eric-ccsm-mapproxy-1']/ss7_e:signaling-network[ss7_e:id='1']/ss7_e:local-signaling-point[ss7_e:node-id='1']/sccp_node_e:local-sap[sccp_node_e:subsystem-number='6']</sap>
+               </gt-destination>
+            </gt-translator>
+            <gt-translator xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node">
+               <id>4</id>
+               <primary-termination-indicator>do-not-change</primary-termination-indicator>
+               <load-share-indicator>backup-secondary-route</load-share-indicator>
+               <numbering-plan>e163-e164</numbering-plan>
+               <nature-of-address>4</nature-of-address>
+               <translation-type>0</translation-type>
+               <number-series>49152010002</number-series>
+               <primary-gt-destination>1</primary-gt-destination>
+               <gt-destination>
+                  <id>1</id>
+                  <sap xmlns:sccp_node_e="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-node" xmlns:ss7_e="urn:rdns:com:ericsson:oammodel:ericsson-ss7">/ss7_e:ss7[ss7_e:name='eric-ccsm-mapproxy-1']/ss7_e:signaling-network[ss7_e:id='1']/ss7_e:local-signaling-point[ss7_e:node-id='1']/sccp_node_e:local-sap[sccp_node_e:subsystem-number='9']</sap>
+               </gt-destination>
+            </gt-translator>
+         </local-signaling-point>
+         <remote-signaling-point>
+            <code>5201</code>
+            <remote-broadcast xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-remote">disallow</remote-broadcast>
+            <cl-segmentation-limit xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-remote">272</cl-segmentation-limit>
+            <segmented-ludt-via xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-remote">ludt</segmented-ludt-via>
+            <sccp-err-msg-format xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-remote">old</sccp-err-msg-format>
+         </remote-signaling-point>
+         <how-to-set-priority-bits xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-m3ua">use-received-value</how-to-set-priority-bits>
+         <spare-bits-in-sio-ni xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-m3ua">as-congestion-prio</spare-bits-in-sio-ni>
+         <congestion-levels-for-network xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-m3ua">3</congestion-levels-for-network>
+         <international-screening xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-network">disabled</international-screening>
+         <sccp-sap xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-network">
+            <subsystem-number>9</subsystem-number>
+         </sccp-sap>
+         <sccp-sap xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp-network">
+            <subsystem-number>6</subsystem-number>
+         </sccp-sap>
+      </signaling-network>
+      <m3ua xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-m3ua">
+         <failover-buffering-size>2000</failover-buffering-size>
+         <local-as>
+            <id>1</id>
+            <network-appearance>0</network-appearance>
+            <remote-as>40001</remote-as>
+            <node-id>1</node-id>
+            <as-profile>1</as-profile>
+            <rk-grouping>
+               <id>1</id>
+               <local-spc>-1</local-spc>
+               <dpc>5201</dpc>
+            </rk-grouping>
+         </local-as>
+         <remote-as>
+            <id>40001</id>
+            <routing-context>0</routing-context>
+            <as-profile>1</as-profile>
+         </remote-as>
+         <local-ipsp>
+            <id>1</id>
+            <local-as>1</local-as>
+            <sctp-endpoint>1</sctp-endpoint>
+            <remote-ipsp>
+               <id>1</id>
+               <asp-identifier-handling>no-asp-id</asp-identifier-handling>
+               <asp-identifier>1</asp-identifier>
+               <message-discard-level-shift>0</message-discard-level-shift>
+               <network-appearance-handling>optional-na</network-appearance-handling>
+               <local-congestion-level>3</local-congestion-level>
+               <routing-context-handling>rfc-4666-compliant</routing-context-handling>
+               <exchange-mode>single</exchange-mode>
+               <remote-as>40001</remote-as>
+               <remote-port-number>0</remote-port-number>
+               <sctp-type>client</sctp-type>
+               <remote-asp-id>1</remote-asp-id>
+               <remote-sp-profile>1</remote-sp-profile>
+            </remote-ipsp>
+         </local-ipsp>
+         <as-profile>
+            <id>1</id>
+            <timer-tr>100</timer-tr>
+            <timer-notify>0</timer-notify>
+            <timer-divert>10</timer-divert>
+            <dupu-behavior>dpc-omitted</dupu-behavior>
+            <notify-behavior>resume-after-aspac-ack</notify-behavior>
+            <dupu-handling>no-dupu-handling</dupu-handling>
+            <interval-for-mtp-status-ind>8</interval-for-mtp-status-ind>
+            <timer-scon>75</timer-scon>
+         </as-profile>
+         <remote-sp-profile>
+            <id>1</id>
+            <timer-ack>60</timer-ack>
+            <timer-assoc>20</timer-assoc>
+            <timer42>8</timer42>
+            <attempts-of-dauds>5</attempts-of-dauds>
+            <max-num-of-affected-dpcs-in-daud>0</max-num-of-affected-dpcs-in-daud>
+            <timer-audit>300</timer-audit>
+            <ntfy-support>rfc-4666-compliant</ntfy-support>
+            <drst-support>rfc-4666-compliant</drst-support>
+            <timer-deactivation>0</timer-deactivation>
+            <tmt-support>rfc-4666-compliant</tmt-support>
+            <heartbeat-procedure>hb-off</heartbeat-procedure>
+            <assoc-establishment-attempts>4</assoc-establishment-attempts>
+            <timer-hb>300</timer-hb>
+            <timer-rec>100</timer-rec>
+         </remote-sp-profile>
+         <local-sctp-endpoint>
+            <id>1</id>
+            <port-number>2905</port-number>
+            <ip-family>${IP_STACK}</ip-family>
+         </local-sctp-endpoint>
+      </m3ua>
+      <timer-sccp-config xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp">10</timer-sccp-config>
+      <load-share-by-cg-pa-gtt xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp">off</load-share-by-cg-pa-gtt>
+      <remove-importance-parameter-usage xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-sccp">keep</remove-importance-parameter-usage>
+      <tcap-eit xmlns="urn:rdns:com:ericsson:oammodel:ericsson-ss7-tcap-eit">
+         <max-subsystems>10</max-subsystems>
+         <max-users-per-subsystem>10</max-users-per-subsystem>
+         <max-dialogues-per-subsystem>10000</max-dialogues-per-subsystem>
+         <max-concurrent-operations-per-subsystem>256</max-concurrent-operations-per-subsystem>
+         <max-network-burst-rate>7500</max-network-burst-rate>
+         <max-user-message-burst-rate>100</max-user-message-burst-rate>
+         <tcap-eit-ssn-loadshare>
+            <id>1</id>
+            <network-id>1</network-id>
+            <subsystem-number>9</subsystem-number>
+            <load-sharing>disabled</load-sharing>
+         </tcap-eit-ssn-loadshare>
+         <tcap-eit-ssn-loadshare>
+            <id>1</id>
+            <network-id>1</network-id>
+            <subsystem-number>6</subsystem-number>
+            <load-sharing>disabled</load-sharing>
+         </tcap-eit-ssn-loadshare>
+         <tcap-eit-ssn-indiv-max-dia>
+            <id>1</id>
+            <network-id>1</network-id>
+            <subsystem-number>9</subsystem-number>
+            <max-number-of-dialogues>101</max-number-of-dialogues>
+            </tcap-eit-ssn-indiv-max-dia>
+         <tcap-eit-ssn-indiv-max-dia>
+            <id>1</id>
+            <network-id>1</network-id>
+            <subsystem-number>6</subsystem-number>
+            <max-number-of-dialogues>101</max-number-of-dialogues>
+         </tcap-eit-ssn-indiv-max-dia>
+      </tcap-eit>
+   </ss7>
+    </config>
+  </edit-config>
+  </rpc>
+  <close-session/>

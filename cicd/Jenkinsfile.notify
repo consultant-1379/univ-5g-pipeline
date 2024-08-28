@@ -1,0 +1,108 @@
+def _project = "5gcicd/univ-5g-pipeline"
+def _credentials = "userpwd-adp"
+def _ccdm = params.CCDM
+def _ccsm = params.CCSM
+def _ccrc = params.CCRC
+def _cces = params.CCES
+def _ccpc = params.CCPC
+def _eda2 = params.EDA2
+def _artifact_exist = params.ARTIFACTS
+def _dry_run = params.DRY_RUN
+def _deploy_result = params.DEPLOY_RESULT
+def _test_result = params.TESTS_RESULT
+def _test_passrate = params.TEST_PASSRATE
+def _email_notify = params.EMAIL_NOTIFY
+def COMMON_GERRIT_URL="${COMMON_GERRIT_URL}"
+def _td = "https://erilink.ericsson.se/eridoc/erl/objectId/09004cff8d28dfc7?docno=&action=current&format=pdf"
+def _deploy_result_style = ""
+def _xray_id = params.XRAY_ID
+def _content_xray_link = ""
+
+if (_email_notify?.trim()) {
+    _email_notify=", " + _email_notify
+}
+
+if (_xray_id){
+    _content_xray_link="<li>JIRA Test Execution: <a href=\"https://eteamproject.internal.ericsson.com/browse/" + _xray_id + "\">" + _xray_id + "</a></li>"
+}
+
+_deploy_result_style = _deploy_result.toLowerCase().contains('fail') ? "#ff1a1a" : "#00e639"
+
+currentBuild.result = 'SUCCESS'
+currentBuild.description = "Status of univ-solution-5g-pipeline"
+
+if (_artifact_exist == 'true') {
+    node("5GNode") {
+        stage("Send email"){
+            emailext to:"${_email_notify}",
+                subject:"UNIV-5G-SOLUTION-PIPELINE: CCXX packages result",
+                mimeType: 'text/html',
+                body: """
+                <h1>
+                Packages has the following results:
+                </h1>
+                <p>
+                    <ul>
+                    <li>DEPLOY:</li>
+                      <ul>
+                        <li>Product ${_ccdm}</li>
+                        <li>Product ${_ccsm}</li>
+                        <li>Product ${_ccrc}</li>
+                        <li>Product ${_cces}</li>
+                        <li>Product ${_ccpc}</li>
+                        <li>Product ${_eda2}</li>
+                      </ul>
+                    <li>TEST: ${_test_result}</li>
+                      <ul>
+                        <li>${_test_passrate}</li>${_content_xray_link}
+                      </ul>
+                    <li>SPINNAKER: ${SPINNAKER_URL}</li>
+                    <li>TEST DESCRIPTION: ${_td}</li>
+                    </ul>
+                </p>
+                """
+      }
+   } 
+} else if (_dry_run == 'true') {
+    node("5GNode") {
+        stage("Send email"){
+            emailext to:"${_email_notify}",
+                subject:"UNIV-5G-SOLUTION-PIPELINE: Intermediate DAY0/DAY1 files status",
+                mimeType: 'text/html',
+                body: """
+                <h1>
+                Day0/Day1 Result:
+                </h1>
+                <p>
+                    <ul>
+                      <li>Day0/Day1: <span style=\"color:${_deploy_result_style}\">${_deploy_result}</span></li>
+                      <li>SPINNAKER: ${SPINNAKER_URL}</li>
+		    </ul>
+                </p>
+                """
+        }
+    }
+} else {
+    node("5GNode") {
+        stage("Send email"){
+            emailext to:"${_email_notify}",
+                subject:"UNIV-5G-SOLUTION-PIPELINE: CCXX packages result",
+                mimeType: 'text/html',
+                body: """
+                <h1>
+                Packages has the following results:
+                </h1>
+                <p>
+                    <ul>
+                    <li>DEPLOY:</li>
+                      <ul>
+                        <li>Installation or configuration of some product failed!</li>
+                        <li>Troubleshooting is ongoing...</li>
+                      </ul>
+                    <li>TEST: ${_test_result}</li>
+                    </ul>
+                </p>
+                """
+      }
+   }
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+    <capabilities>
+        <capability>urn:ietf:params:netconf:base:1.0</capability>
+    </capabilities>
+</hello>
+]]>]]>
+<rpc message-id="4" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+    <edit-config>
+        <target>
+            <running/>
+        </target>
+        <config xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0">
+            <udr-application-counters xmlns="urn:rdns:com:ericsson:oammodel:ericsson-app-counters-udr">
+                <active-udr-sites>1</active-udr-sites>
+                <active-udr-sites>${SECOND_UDR_SITE}</active-udr-sites>
+                <predefined-counter-group>
+                    <counter-group>
+                        <name>5g-predefined-counters</name>
+                        <administrative-state>unlocked</administrative-state>
+                        <periodicity>fifteen-min</periodicity>
+                        <counter>
+                            <name>5gsupi</name>
+                            <administrative-state>unlocked</administrative-state>
+                        </counter>
+                        <counter>
+                            <name>5gsubin</name>
+                            <administrative-state>unlocked</administrative-state>
+                        </counter>
+                        <counter>
+                            <name>5gactsubin</name>
+                            <administrative-state>unlocked</administrative-state>
+                        </counter>
+                        <counter>
+                            <name>pcfsubnbr</name>
+                            <administrative-state>unlocked</administrative-state>
+                        </counter>
+                        <counter>
+                            <name>5gnotifsubnbr</name>
+                            <administrative-state>unlocked</administrative-state>
+                        </counter>
+                        <counter>
+                            <name>5geesubnbr</name>
+                            <administrative-state>unlocked</administrative-state>
+                        </counter>
+                        <counter>
+                            <name>5geeamfnbr</name>
+                            <administrative-state>unlocked</administrative-state>
+                        </counter>
+                    </counter-group>
+                </predefined-counter-group>
+            </udr-application-counters>
+        </config>
+    </edit-config>
+</rpc>

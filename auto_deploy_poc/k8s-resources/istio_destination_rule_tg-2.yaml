@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  labels:
+    applicable-for: eric-ccrc.eric-ccpc.eric-cces.eric-ccdm
+  name: eric-${TG_NAME}-framework-dr-2
+spec:
+  host: ${TG_HOST}e
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 8084
+      tls:
+        caCertificates: ${CA_CERT}
+        clientCertificate: ${CLIENT_CRT}
+        mode: MUTUAL
+        privateKey: ${CLIENT_KEY}

@@ -1,0 +1,29 @@
+{
+  "name": "HLR-FE",
+  "protocolType": "SSH",
+  "version": "",
+  "active": true,
+  "protocolAttributes": {
+    "ConnectionTimeOut": "11000",
+    "UserName": "${HLR_MML_USER}",
+    "MaxPoolSize": "10",
+    "IdleTimeout": "1",
+    "Crlf": "\r\n",
+    "Host": "${HLR_MML_VIP}",
+    "LoginProcess": "",
+    "BlockingTimeout": "10000",
+    "AppUserName": "",
+    "ResponseTimeOut": "11000",
+    "LongRetriesTimeInterval": "15000",
+    "AppCommand": "",
+    "FunctionBusyTimer": "2000",
+    "RetryFactor": "1",
+    "Prompt": "<",
+    "AppPassword": "",
+    "AppLoginProcess": "",
+    "PortNumber": "52000",
+    "Key": "",
+    "NumberOfRetries": "3",
+    "Password": "${HLR_MML_PASS}"
+  }
+}

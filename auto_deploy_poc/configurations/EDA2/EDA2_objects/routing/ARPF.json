@@ -1,0 +1,6 @@
+{
+  "networkElementType": "ARPF",
+  "routingMethod": "UnconditionalRouting",
+  "instanceType": "NetworkElementGroup",
+  "instance": "CCDM-GROUP"
+}

@@ -1,0 +1,6 @@
+{
+  "networkElementType": "CUDB_HLR",
+  "routingMethod": "UnconditionalRouting",
+  "instanceType": "NetworkElementGroup",
+  "instance": "UDR-GROUP"
+}

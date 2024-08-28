@@ -1,0 +1,10 @@
+{
+  "name": "UDR-GROUP",
+  "groupType": "Failover",
+  "networkElements": [
+    {
+      "name": "UDR",
+      "order": 1
+    }${UDR_2_NE}
+  ]
+}

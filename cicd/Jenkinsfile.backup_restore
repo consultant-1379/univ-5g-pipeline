@@ -1,0 +1,96 @@
+@Library("PipelineGlobalLibrary") _
+import com.ericsson.ci.mason.Mason2
+
+def _project = "5gcicd/univ-5g-pipeline"
+def _unit = "adp"
+def _credentials = "userpwd-adp"
+def _branch = "master"
+def _refspec = ""
+def _gerrit_user = ""
+def _gerrit_pass = ""
+def _cloud = "eccd-ibd-udm31582"
+def _kubeConf = _cloud + "_admin.conf"
+def _cloud2 = ""
+def _cloud2_config = ""
+def _backup_location = params.BACKUP_LOCATION
+
+if ( System.getenv("JENKINS_HOME")) { // Jenkins execution
+    _branch = params.GERRIT_BRANCH?: 'master'
+    if( params.GERRIT_REFSPEC == ''){
+        _refspec = 'master'
+    }else{
+        _refspec = params.GERRIT_REFSPEC
+    }
+    _cloud = params.CLOUD?: _cloud
+    _kubeConf = _cloud + "_admin.conf"
+    _cloud2 = params.CLOUD2
+    if( _cloud2 != ''){
+        _cloud2_config = _cloud2 + "_admin.conf"
+    }
+
+    // Import Gerrit credentials
+    withCredentials([usernamePassword(credentialsId: "${_credentials}",
+                                      usernameVariable: "GERRIT_USER",
+                                      passwordVariable: "GERRIT_PASS")
+                    ]){
+        _gerrit_user = GERRIT_USER
+        _gerrit_pass = GERRIT_PASS
+    }
+
+} else { // Local Execution
+        _gerrit_user = ''       // Assign value to this credential locally
+        _gerrit_pass = ''       // Assign value to this credential locally
+}
+
+def result = Mason2.ciPipeline(this) {
+    additionalData("product", 'UNIV')
+    additionalData("cl_pipeline", 'CLe0')
+    additionalData("owner_name": 'UNIV')
+    additionalData("owner_email": 'PDLUDM5GIN@pdl.internal.ericsson.com')
+    additionalData("artifact_name", 'UNIV-5G-Solution')
+    timeout(240)
+    cloud(_cloud)
+    parallel(false)
+    unit(_unit)
+    checkout {
+        gerrit("checkout") {
+            project(_project)
+            credentials(_credentials)
+            branch(_branch)
+            refspec(_refspec)
+            advancedsubopts {
+                recursiveupdate(true)
+                useparentcreds(true)
+                timeout(20)
+            }
+            cleanbeforecheckout()
+            advancedcheckout() {
+                timeout(40)
+            }
+            strategybuild {
+                strategy("GERRIT")
+            }
+        }
+    }
+
+    script {
+        shell("Execute CCDM backup restore") {
+            container('adp-common-utils','armdocker.rnd.ericsson.se/proj-udm-5g-integration-test/util_images/adp-common-utils', '3.7.3', true)
+            dir("auto_deploy_poc")
+            privileged(true)
+            kubeConfig(_kubeConf)
+            //this will export site2 admin.conf to CONFIG_FILE env var. If _cloud2_config is not defined, this command is ignored
+            configFile(_cloud2_config)
+            env("BACKUP_LOCATION", _backup_location)
+            env("BACKUP_USER", _gerrit_user)
+            env("BACKUP_PASS", _gerrit_pass)
+            cmd("""
+
+                export SITE2_CONFIG=\${CONFIG_FILE}
+                bash restoreCCDM.sh
+
+            """)
+        }
+    }
+
+}

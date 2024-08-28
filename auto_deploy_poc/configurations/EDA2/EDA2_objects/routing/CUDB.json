@@ -1,0 +1,6 @@
+{
+  "networkElementType": "CUDB",
+  "routingMethod": "UnconditionalRouting",
+  "instance": "UDR-GROUP",
+  "instanceType": "NetworkElementGroup"
+}

@@ -1,0 +1,6 @@
+{
+  "networkElementType": "HSS_FE_IMS",
+  "routingMethod": "UnconditionalRouting",
+  "instanceType": "NetworkElement",
+  "instance": "vHSS_IMS"
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <edit-config>
+    <target><running/></target>
+    <config xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0">
+      <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+        <ciphering-data>
+          <seed>31d55c51125207a4750c2abdb4af967031d55c51125207a4750c2abdb4af9670</seed>
+        </ciphering-data>
+      </udm>
+    </config>
+  </edit-config>
+  </rpc>
+  <close-session/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+  </capabilities>
+  </hello>]]>]]>
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="0">
+  <action xmlns="urn:ietf:params:xml:ns:yang:1">
+    <udm xmlns="urn:rdns:com:ericsson:oammodel:ericsson-udm">
+      <ciphering-data>
+        <set-customer-key>
+          <customer-key>4A9CD69C48167BD6276ED340EB24E388</customer-key>
+        </set-customer-key>
+      </ciphering-data>
+    </udm>
+  </action>
+  </rpc>
+  <close-session/>
+

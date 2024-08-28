@@ -1,0 +1,30 @@
+{
+  "name": "CCDM-RAPI",
+  "protocolType": "R-API",
+  "version": "",
+  "active": true,
+  "protocolAttributes": {
+    "baseUri": "raw-api/v1",
+    "nrOfRetries": "3",
+    "oauthTokenHost": "${IPV6_L}${ccdm_5g_prov_VIP}${IPV6_R}",
+    "BlockingTimeout": "10000",
+    "host": "${IPV6_L}${ccdm_5g_prov_VIP}${IPV6_R}",
+    "truststoreFile": "/app/client-certificate/mykeystore_fqdn.p12",
+    "truststorePassword": "Admin123",
+    "basicAuthUsername": "",
+    "oauthTokenBaseUri": "auth/realms/oam/protocol/openid-connect/token",
+    "responseTimeout": "11000",
+    "retryFactor": "1",
+    "oauthClientId": "ccdm-rapi-client",
+    "oauthClientSecret": "ccdm-rapi-secret",
+    "acceptedResponseCode": "200",
+    "port": "443",
+    "MaxPoolSize": "100",
+    "retryErrorResponseCode": "503",
+    "oauthTokenPort": "443",
+    "retryTimeInterval": "1000",
+    "IdleTimeout": "1",
+    "connectionTimeout": "11000",
+    "secure": "true"
+  }
+}

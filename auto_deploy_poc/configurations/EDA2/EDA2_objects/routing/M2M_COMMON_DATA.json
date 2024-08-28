@@ -1,0 +1,6 @@
+{
+  "networkElementType": "M2M_COMMON_DATA",
+  "routingMethod": "UnconditionalRouting",
+  "instanceType": "NetworkElementGroup",
+  "instance": "UDR-GROUP"
+}

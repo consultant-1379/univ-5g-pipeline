@@ -1,0 +1,6 @@
+{
+  "networkElementType": "UDR",
+  "routingMethod": "UnconditionalRouting",
+  "instanceType": "NetworkElementGroup",
+  "instance": "UDR-GROUP"
+}

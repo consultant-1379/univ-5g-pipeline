@@ -1,0 +1,6 @@
+{
+  "networkElementType": "RAPI",
+  "routingMethod": "UnconditionalRouting",
+  "instanceType": "NetworkElement",
+  "instance": "CCDM-RAPI"
+}

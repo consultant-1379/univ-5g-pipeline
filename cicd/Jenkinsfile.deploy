@@ -1,0 +1,205 @@
+@Library("PipelineGlobalLibrary") _
+import com.ericsson.ci.mason.Mason2
+
+def _project = "5gcicd/univ-5g-pipeline"
+def _unit = "adp"
+def _credentials = "userpwd-adp"
+def _branch = "master"
+def _refspec = ""
+def _gerrit_user = ""
+def _gerrit_pass = ""
+def _evnfm_credentials = "vnfm-creds"
+def _evnfm_user = ""
+def _evnfm_pass = ""
+def _cloud = "eccd-ibd-udm31582"
+def _kubeConf = _cloud + "_admin.conf"
+def _CCRC_REPO = "https://armdocker.rnd.ericsson.se/artifactory/proj-ccrc-helm-local/tmp/ccrc-csar"
+def _CCSM_REPO = "https://arm.seli.gic.ericsson.se/artifactory/proj-hss-docker-global/proj_hss/5g/releases/csar"
+def _CCDM_REPO = "https://arm.seli.gic.ericsson.se/artifactory/proj-5g-ccdm-released-generic-local/CCDM"
+def _CCPC_REPO = "https://arm.seli.gic.ericsson.se/artifactory/proj-5g-ccpc-ci-internal-generic-local/ccpc-cle0"
+def _CCES_REPO = "https://arm.seli.gic.ericsson.se/artifactory/proj-cces-dev-generic-local/csar/cces"
+def _EDA2_REPO = "https://arm.seli.gic.ericsson.se/artifactory/proj-activation-poc-helm-local/activation/verified"
+def _CCSM_USE_MASTER = "false"
+def _ALWAYS_REINSTALL = "true"
+def _DRY_RUN = "false"
+def _cloud2 = ""
+def _cloud2_config = ""
+def _CLOUD_PRODUCTS = ""
+def _CLOUD2_PRODUCTS = ""
+def _TARGET_EVNFM = ""
+
+if ( System.getenv("JENKINS_HOME")) { // Jenkins execution
+    _branch = params.GERRIT_BRANCH?: 'master'
+    if( params.GERRIT_REFSPEC == ''){
+        _refspec = 'master'
+    }else{
+        _refspec = params.GERRIT_REFSPEC
+    }
+    _cloud = params.CLOUD?: _cloud
+    _kubeConf = _cloud + "_admin.conf"
+    _CCRC_REPO = params.CCRC_REPO
+    _CCSM_REPO = params.CCSM_REPO
+    _CCDM_REPO = params.CCDM_REPO
+    _CCPC_REPO = params.CCPC_REPO
+    _CCES_REPO = params.CCES_REPO
+    _EDA2_REPO = params.EDA2_REPO
+    _CCSM_USE_MASTER = params.CCSM_USE_MASTER
+    _ALWAYS_REINSTALL = params.ALWAYS_REINSTALL
+    _DRY_RUN = params.DRY_RUN
+    _TARGET_EVNFM = params.TARGET_EVNFM
+    _cloud2 = params.CLOUD2
+    if( _cloud2 != ''){
+        _cloud2_config = _cloud2 + "_admin.conf"
+    }
+    _CLOUD_PRODUCTS = params.CLOUD_PRODUCTS
+    _CLOUD2_PRODUCTS = params.CLOUD2_PRODUCTS
+
+    // Import Gerrit credentials
+    withCredentials([usernamePassword(credentialsId: "${_credentials}",
+                                      usernameVariable: "GERRIT_USER",
+                                      passwordVariable: "GERRIT_PASS")
+                    ]){
+        _gerrit_user = GERRIT_USER
+        _gerrit_pass = GERRIT_PASS
+    }
+    withCredentials([usernamePassword(credentialsId: "${_evnfm_credentials}",
+                                      usernameVariable: "EVNFM_USER",
+                                      passwordVariable: "EVNFM_PASS")
+                    ]){
+        _evnfm_user = EVNFM_USER
+        _evnfm_pass = EVNFM_PASS
+    }
+
+} else { // Local Execution
+        _gerrit_user = ''       // Assign value to this credential locally
+        _gerrit_pass = ''       // Assign value to this credential locally
+}
+
+def result = Mason2.ciPipeline(this) {
+    additionalData("product", 'UNIV')
+    additionalData("cl_pipeline", 'CLe0')
+    additionalData("owner_name": 'UNIV')
+    additionalData("owner_email": 'PDLUDM5GIN@pdl.internal.ericsson.com')
+    additionalData("artifact_name", 'UNIV-5G-Solution')
+    timeout(240)
+    cloud(_cloud)
+    parallel(false)
+    unit(_unit)
+    checkout {
+        gerrit("checkout") {
+            project(_project)
+            credentials(_credentials)
+            branch(_branch)
+            refspec(_refspec)
+            advancedsubopts {
+                recursiveupdate(true)
+                useparentcreds(true)
+                timeout(20)
+            }
+            cleanbeforecheckout()
+            advancedcheckout() {
+                timeout(40)
+            }
+            strategybuild {
+                strategy("GERRIT")
+            }
+        }
+    }
+    script {
+        shell("deploy-solution") {
+            env("ARM_USER", _gerrit_user)
+            env("ARM_PASS", _gerrit_pass)
+            env("CCRC_REPO", _CCRC_REPO)
+            env("CCSM_REPO", _CCSM_REPO)
+            env("CCDM_REPO", _CCDM_REPO)
+            env("CCPC_REPO", _CCPC_REPO)
+            env("CCES_REPO", _CCES_REPO)
+            env("EDA2_REPO", _EDA2_REPO)
+            env("CCSM_USE_MASTER", _CCSM_USE_MASTER)
+            env("ALWAYS_REINSTALL", _ALWAYS_REINSTALL)
+            env("DRY_RUN", _DRY_RUN)
+            env("TARGET_EVNFM", _TARGET_EVNFM)
+            env("EVNFM_USER", _evnfm_user)
+            env("EVNFM_PASS", _evnfm_pass)
+            kubeConfig(_kubeConf)
+            //this will export site2 admin.conf to CONFIG_FILE env var. If _cloud2_config is not defined, this command is ignored
+            configFile(_cloud2_config)
+            env("CLOUD_PRODUCTS", _CLOUD_PRODUCTS)
+            env("CLOUD2_PRODUCTS", _CLOUD2_PRODUCTS)
+            container('adp-common-utils','armdocker.rnd.ericsson.se/proj-udm-5g-integration-test/util_images/adp-common-utils', '3.7.4', true)
+            dir("auto_deploy_poc")
+            privileged(true)
+            cmd("""
+                if [ \$(kubectl get pod -n udm-5gcicd --no-headers | wc -l) -gt 1 ]; then
+                    echo \"Another execution on this cluster ongoing!\"
+                    kubectl get pod -n udm-5gcicd --no-headers
+                    exit 1
+                fi
+                export SITE2_CONFIG=\${CONFIG_FILE}
+
+                bash get_product_inputs.sh
+
+                # adapt.sh is using current cluster + SITE2_CONFIG to collect info from both sites
+                bash adapt.sh
+
+                # in case of geo-red, first cleanup 2nd site, to avoid CCDM issues
+                if ! [ -z \${SITE2_CONFIG} ]; then
+                  SITE1_CONFIG=\${KUBECONFIG}
+                  export KUBECONFIG=\${SITE2_CONFIG}
+
+                  export CLEANUP_ONLY=true
+                  export DEPLOY_NS=\${CLOUD2_PRODUCTS}
+                  bash deploy_solution.sh
+
+                  export KUBECONFIG=\${SITE1_CONFIG}
+                  export CLEANUP_ONLY=false
+                fi
+
+                export SITE_ID=1
+                export DEPLOY_NS=\${CLOUD_PRODUCTS}
+                bash deploy_solution.sh
+
+                if ! [ -z \${SITE2_CONFIG} ]; then
+                  export KUBECONFIG=\${SITE2_CONFIG}
+                  export SITE_ID=2
+                  export DEPLOY_NS=\${CLOUD2_PRODUCTS}
+                  bash deploy_solution.sh
+                fi
+
+                if [ \${DRY_RUN} == false ]; then
+                  bash configureEda2.sh
+                fi
+
+            """)
+        }
+    }
+
+    script {
+        shell("Copy artifacts to workspace") {
+            env("ARM_USER", _gerrit_user)
+            env("ARM_PASS", _gerrit_pass)
+            kubeConfig(_kubeConf)
+            when('ALWAYS')
+            container('adp-common-utils','armdocker.rnd.ericsson.se/proj-udm-5g-integration-test/util_images/adp-common-utils', '3.7.4', true)
+            dir("auto_deploy_poc")
+            privileged(true)
+            cmd("""
+
+                touch deployment.properties
+
+                cp deployment.properties \${WORKSPACE}
+
+            """)
+        }
+    }
+
+
+    jenkins {
+        dsl("Archive artifact"){
+            when('ALWAYS')
+            cmd {
+                archiveArtifacts allowEmptyArchive: true, artifacts: '*.properties, auto_deploy_poc/adapted_dir/*.xml, auto_deploy_poc/adapted_dir/*.yaml', onlyIfSuccessful: false
+            }
+        }
+    }
+}
